@@ -9,7 +9,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class GenresOfTvSeries implements Serializable {
+public class MovieGenre implements Serializable {
     private Long id;
     private String name;
 }

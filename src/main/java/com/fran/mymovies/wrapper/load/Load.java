@@ -14,8 +14,8 @@ import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
 import com.fran.mymovies.wrapper.constants.WrapperConstants;
-import com.fran.mymovies.wrapper.model.GenresOfMovies;
-import com.fran.mymovies.wrapper.model.GenresOfTvSeries;
+import com.fran.mymovies.wrapper.model.MovieGenre;
+import com.fran.mymovies.wrapper.model.TvSerieGenre;
 import com.fran.mymovies.wrapper.model.Movie;
 import com.fran.mymovies.wrapper.model.TvSerie;
 import com.fran.mymovies.wrapper.db.JDBCutils;
@@ -36,8 +36,8 @@ public class Load {
         constants = new WrapperConstants();
         List<Movie> movieList = getMovies();
         List<TvSerie> tvSeriesList = getTVSeries();
-        List<GenresOfMovies> moviesGenresList = getGenresOfMovies(constants.getJSON_URL_MOVIE_GENRES());
-        List<GenresOfTvSeries> tvSeriesGenresList = getGenresOfTvSeries(constants.getJSON_URL_TV_GENRES());
+        List<MovieGenre> moviesGenresList = getGenresOfMovies(constants.getJSON_URL_MOVIE_GENRES());
+        List<TvSerieGenre> tvSeriesGenresList = getGenresOfTvSeries(constants.getJSON_URL_TV_GENRES());
 
         JDBCutils.connectDB(constants.getURL(), constants.getUSER(), constants.getPASS());
 
@@ -234,8 +234,8 @@ public class Load {
      * @param jsonURL String correspondientes a la url de géneros de movies.
      * @return Lista con todos los géneros de movies.
      */
-    private static List<GenresOfMovies> getGenresOfMovies(String jsonURL){
-        List<GenresOfMovies> result = new ArrayList<>();
+    private static List<MovieGenre> getGenresOfMovies(String jsonURL){
+        List<MovieGenre> result = new ArrayList<>();
         CompletableFuture<Void> future = CompletableFuture.runAsync(()->{
             try {
                 Object obj = new JSONParser().parse(readUrl(jsonURL));
@@ -244,7 +244,7 @@ public class Load {
                 for (Object object : jsonArray) {
                     Long id = (Long) (((JSONObject) object).get("id"));
                     String name = (String) (((JSONObject) object).get("name"));
-                    result.add(new GenresOfMovies(id,name));
+                    result.add(new MovieGenre(id,name));
                 }
             } catch(ParseException e){
                 log.info("Ha ocurrido un error leyendo géneros de pelis.");
@@ -265,8 +265,8 @@ public class Load {
      * @param jsonURL String correspondientes a la url de géneros de series.
      * @return Lista con todos los géneros de series.
      */
-    private static List<GenresOfTvSeries> getGenresOfTvSeries(String jsonURL){
-        List<GenresOfTvSeries> result = new ArrayList<>();
+    private static List<TvSerieGenre> getGenresOfTvSeries(String jsonURL){
+        List<TvSerieGenre> result = new ArrayList<>();
         CompletableFuture<Void> future = CompletableFuture.runAsync(()->{
             try {
                 Object obj = new JSONParser().parse(readUrl(jsonURL));
@@ -275,7 +275,7 @@ public class Load {
                 for (Object object : jsonArray) {
                     Long id = (Long) (((JSONObject) object).get("id"));
                     String name = (String) (((JSONObject) object).get("name"));
-                    result.add(new GenresOfTvSeries(id,name));
+                    result.add(new TvSerieGenre(id,name));
                 }
             } catch(ParseException e){
                 log.info("Ha ocurrido un error leyendo géneros de tv series.");

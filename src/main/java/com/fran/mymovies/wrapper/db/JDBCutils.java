@@ -1,7 +1,7 @@
 package com.fran.mymovies.wrapper.db;
 
-import com.fran.mymovies.wrapper.model.GenresOfMovies;
-import com.fran.mymovies.wrapper.model.GenresOfTvSeries;
+import com.fran.mymovies.wrapper.model.MovieGenre;
+import com.fran.mymovies.wrapper.model.TvSerieGenre;
 import com.fran.mymovies.wrapper.model.Movie;
 import com.fran.mymovies.wrapper.model.TvSerie;
 import lombok.extern.slf4j.Slf4j;
@@ -119,11 +119,11 @@ public class JDBCutils {
      * @param genresList
      * @return
      */
-    public static int insertGenresOfMovies(String sql, List<GenresOfMovies> genresList){
+    public static int insertGenresOfMovies(String sql, List<MovieGenre> genresList){
         try{
             ps = con.prepareStatement(sql);
             int count = 0;
-            for(GenresOfMovies g: genresList){
+            for(MovieGenre g: genresList){
                 ps.setLong(1, g.getId());
                 ps.setString(2, g.getName());
                 ps.executeUpdate();
@@ -140,11 +140,11 @@ public class JDBCutils {
      * @param genresList
      * @return
      */
-    public static int insertGenresOfTvSeries(String sql, List<GenresOfTvSeries> genresList){
+    public static int insertGenresOfTvSeries(String sql, List<TvSerieGenre> genresList){
         try{
             ps = con.prepareStatement(sql);
             int count = 0;
-            for(GenresOfTvSeries g: genresList){
+            for(TvSerieGenre g: genresList){
                 ps.setLong(1, g.getId());
                 ps.setString(2, g.getName());
                 ps.executeUpdate();
