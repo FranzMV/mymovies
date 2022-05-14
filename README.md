@@ -1,3 +1,2 @@
-# mymovies
-DAM final project
+# MyMovies
 Proyecto final DAM IES San Vicente.
