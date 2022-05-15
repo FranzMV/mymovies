@@ -1,0 +1,13 @@
+	@media (min-width:767px){
+		.registration{
+			max-width: 400px;
+		}
+	}
+
+
+
+body {
+  font-family: "Poppins", sans-serif;
+  height: 100vh;
+  background-color:#5E81AC;
+}

@@ -1,14 +1,13 @@
 package com.fran.mymovies.dto;
 
-import com.fran.mymovies.entity.MovieGenre;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
+/**
+ * @author Francisco David Manzanedo.
+ */
 @Getter
 @Setter
 @NoArgsConstructor

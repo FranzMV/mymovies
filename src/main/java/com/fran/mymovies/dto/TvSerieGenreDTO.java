@@ -4,6 +4,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * @author Francisco David Manzanedo.
+ */
 @Getter
 @Setter
 @NoArgsConstructor

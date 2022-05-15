@@ -6,11 +6,13 @@ import lombok.Setter;
 
 import java.util.Map;
 
+/**
+ * @author Francisco David Manzanedo.
+ */
 @Getter
 @Setter
 @NoArgsConstructor
 public class TvSerieDTO {
-
     private Long id;
     private String original_language;
     private String original_title;

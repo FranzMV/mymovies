@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{master.html}" xmlns:sd="http://www.w3.org/1999/xhtml">
+
+<title>Pelis</title>
+<head>
+    <meta charset="utf-8">
+    <title>Album example · Bootstrap v5.2</title>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" id="bootstrap-css" rel="stylesheet">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/movieslist.css}">
+</head>
+<body>
+<header>
+
+    <div class="navbar navbar-dark bg-dark box-shadow">
+        <div class="container d-flex justify-content-between">
+            <a href="#" class="navbar-brand d-flex align-items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+                <strong>Album</strong>
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarHeader" aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </div>
+    </div>
+</header>
+
+<main role="main">
+    <div layout:fragment="content">
+        <div  class="album py-5 bg-light">
+            <div class="container">
+                <div class="row" >
+                    <div class="col-md-4" th:each="movie: ${movies}"
+                    th:object="${movie}">
+                        <div class="card mb-4 box-shadow" th:href="@{/movie/{id}(id=*{id})}">
+                            <img class="card-img-top"
+                                 th:src="|${urlImage}${movie.backdrop_path}|"
+                                 alt="Card image cap">
+                            <div class="card-body">
+                                <p class="card-text" th:text="*{title}"></p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="btn-group">
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-5" th:with="page=${movies}">
+                    <div class="col-sm-6">
+                        <div sd:pagination-summary></div>
+                    </div>
+                    <div class="col-sm-6">
+                        <nav>
+                            <ul class="pagination" sd:pagination="full"></ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer class="text-muted">
+    <div class="container">
+        <p class="float-right">
+            <a href="#">Back to top</a>
+        </p>
+        <p>Album example is &copy; Bootstrap, but please download and customize it for yourself!</p>
+        <p>New to Bootstrap? <a href="../../">Visit the homepage</a> or read our <a href="../../getting-started/">getting started guide</a>.</p>
+    </div>
+</footer>
+</body>
+</html>

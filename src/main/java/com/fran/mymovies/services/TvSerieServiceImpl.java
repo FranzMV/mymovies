@@ -1,7 +1,6 @@
 package com.fran.mymovies.services;
 
 import com.fran.mymovies.dao.ITvSeriesDAO;
-import com.fran.mymovies.entity.Movie;
 import com.fran.mymovies.entity.TvSerie;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,6 +11,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+/**
+ * @author Francisco David Manzanedo.
+ */
 @Getter
 @Setter
 @NoArgsConstructor

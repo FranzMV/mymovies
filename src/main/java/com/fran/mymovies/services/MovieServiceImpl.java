@@ -6,10 +6,15 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+
+/**
+ * @author Francisco David Manzanedo.
+ */
 @Getter
 @Setter
 @NoArgsConstructor
@@ -24,6 +29,7 @@ public class MovieServiceImpl implements IMovieService{
     public List<Movie> findAll() {
         return (List<Movie>) movieDAO.findAll();
     }
+
 
     @Override
     public Movie findById(Long id) {
