@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns="http://www.w3.org/1999/html" xmlns:layout="http://www.w3.org/1999/xhtml"
       xsi:schemaLocation="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{master.html}" xmlns:sd="http://www.w3.org/1999/xhtml">
+      layout:decorate="~{master.html}">
 
-<title>Pelis</title>
+<title th:text="${title}"></title>
 <head>
     <meta charset="utf-8">
-    <title>Album example · Bootstrap v5.2</title>
+    <title th:text="${title}"></title>
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" id="bootstrap-css" rel="stylesheet">
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -19,8 +19,14 @@
     <div class="navbar navbar-dark bg-dark box-shadow">
         <div class="container d-flex justify-content-between">
             <a href="#" class="navbar-brand d-flex align-items-center">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
-                <strong>Album</strong>
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                     class="bi bi-camera-reels"
+                     stroke="currentColor"  stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M6 3a3 3 0 1 1-6 0 3 3 0 0 1 6 0zM1 3a2 2 0 1 0 4 0 2 2 0 0 0-4 0z"/>
+                    <path d="M9 6h.5a2 2 0 0 1 1.983 1.738l3.11-1.382A1 1 0 0 1 16 7.269v7.462a1 1 0 0 1-1.406.913l-3.111-1.382A2 2 0 0 1 9.5 16H2a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h7zm6 8.73V7.27l-3.5 1.555v4.35l3.5 1.556zM1 8v6a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V8a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1z"/>
+                    <path d="M9 6a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM7 3a2 2 0 1 1 4 0 2 2 0 0 1-4 0z"/>
+                </svg>
+                <strong>Movies</strong>
             </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarHeader" aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -30,41 +36,50 @@
 </header>
 
 <main role="main">
-    <div layout:fragment="content">
         <div  class="album py-5 bg-light">
             <div class="container">
                 <div class="row" >
                     <div class="col-md-4" th:each="movie: ${movies}"
-                    th:object="${movie}">
+                        th:object="${movie}">
                         <div class="card mb-4 box-shadow" th:href="@{/movie/{id}(id=*{id})}">
                             <img class="card-img-top"
                                  th:src="|${urlImage}${movie.backdrop_path}|"
                                  alt="Card image cap">
                             <div class="card-body">
-                                <p class="card-text" th:text="*{title}"></p>
+                                <h5 class="card-text" th:text="*{title}"></h5>
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="btn-group">
-
                                     </div>
-
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="row mt-5" th:with="page=${movies}">
-                    <div class="col-sm-6">
-                        <div sd:pagination-summary></div>
-                    </div>
-                    <div class="col-sm-6">
-                        <nav>
-                            <ul class="pagination" sd:pagination="full"></ul>
-                        </nav>
+                    <div class="row">
+                        <!--Total Movies [[${totalItems}]] : Page [[${currentPage}]] of [[${totalPages}]]-->
+                        <div class="col-md-2"></div>
+                        <div class="col-md-8">
+                            <nav aria-label="Pagination">
+                                &nbsp; &nbsp; - &nbsp;
+                                <ul class="pagination justify-content-center">
+                                    <li class="page-item" th:classappend="@{prevPage == 0 ? 'disabled' : ''}">
+                                        <a  class="page-link" th:href="@{'/movies/page/' + ${prevPage}}">Anterior</a>
+                                    </li>
+                                    <li class="page-item" th:each="i: ${#numbers.sequence(1, totalPages)}"
+                                        th:classappend="${currentPage == i ? 'active' : ''} ">
+                                        <a  class="page-link" th:href="@{'/movies/page/' + ${i}}"
+                                            th:text="${i}"></a>
+                                    </li>
+                                    <li class="page-item" th:classappend="@{current == totalPages ? 'disabled' : ''}">
+                                        <a  class="page-link" th:href="@{'/movies/page/' + ${nextPage}}">Siguiente</a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                        <div class="col-md-2"></div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 </main>
 
 <footer class="text-muted">
