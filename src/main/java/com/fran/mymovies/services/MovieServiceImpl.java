@@ -26,6 +26,7 @@ public class MovieServiceImpl implements IMovieService{
     @Autowired
     private IMovieDAO movieDAO;
 
+
     @Override
     @Transactional(readOnly = true)
     public List<Movie> findAll() {

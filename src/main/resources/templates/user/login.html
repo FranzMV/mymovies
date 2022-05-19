@@ -1,37 +1,54 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-      xsi:schemaLocation="http://www.thymeleaf.org ">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" id="bootstrap-css" rel="stylesheet">
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <link rel="stylesheet" type="text/css" th:href="@{/css/login.css}">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>My Movies</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/registration.css}">
 </head>
 <body>
-<div class="wrapper fadeInDown">
-    <div id="formContent">
-        <!-- Tabs Titles -->
+    <section id="contenido">
+        <div class="container h-100">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="col-12 col-md-5 col-lg-7 col-xl-7" style="width:410px;">
+                    <div class="card" style="border-radius: 15px;" >
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <strong>Holy guacamole!</strong> You should check in on some of those fields below.
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                        <div class="card-body my-5">
+                            <p class="text-center text-secondary fs-1  mb-5" >Login
+                            </p>
+                            <form>
+                                <div class="col-auto mb-4">
+                                    <input type="password" id="user"
+                                           class="form-control form-control-lg text-center" placeholder="Usuario"/>
+                                </div>
+                                <div class="col-auto mb-4">
+                                    <input type="password"
+                                           class="form-control form-control-lg text-center" placeholder="Password"/>
+                                </div>
+                                <div class="d-flex justify-content-center mt-5"  >
+                                    <button type="button"
+                                            class="btn btn-success btn-block btn-lg gradient-custom-4 text-white">
+                                        Iniciar Sesión</button>
+                                </div>
+                            </form>
 
-        <!-- Icon -->
-        <div class="fadeIn first">
-            <img src="http://danielzawadzki.com/codepen/01/icon.svg" id="icon" alt="User Icon"/>
+                        </div>
+                        <p class="text-center text-muted"  >¿No tiene una cuenta?
+                            <a th:href="@{/mymovies/registration}" class="card-link my-5">
+                                <u>Registrarse aquí</u>
+                            </a>
+                        </p>
+                    </div>
+
+                </div>
+            </div>
         </div>
-
-        <!-- Login Form -->
-        <form>
-            <input type="text" id="login" class="fadeIn second" name="login" placeholder="login">
-            <input type="text" id="password" class="fadeIn third" name="login" placeholder="password">
-            <input type="submit" class="fadeIn fourth" value="Log In">
-        </form>
-
-        <!-- Remind Passowrd -->
-        <div id="formFooter">
-            <a class="underlineHover" href="#">Forgot Password?</a>
-        </div>
-
-    </div>
-</div>
+    </section>
+    <footer th:insert="fragments :: footer"> </footer>
+    <div th:insert="fragments :: scripts"> </div>
 </body>
 </html>
