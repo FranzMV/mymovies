@@ -13,13 +13,12 @@
             <div class="row d-flex justify-content-center align-items-center h-100">
                 <div class="col-12 col-md-5 col-lg-7 col-xl-7" style="width:410px;">
                     <div class="card" style="border-radius: 15px;" >
-                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                            <strong>Holy guacamole!</strong> You should check in on some of those fields below.
+                        <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <strong>Holy guacamole!</strong> <p th:text="${error}"></p>
                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
                         <div class="card-body my-5">
-                            <p class="text-center text-secondary fs-1  mb-5" >Login
-                            </p>
+                            <p class="text-center text-secondary fs-1  mb-5" >Login</p>
                             <form>
                                 <div class="col-auto mb-4">
                                     <input type="password" id="user"

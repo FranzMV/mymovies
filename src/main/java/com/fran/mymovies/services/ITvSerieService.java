@@ -1,6 +1,8 @@
 package com.fran.mymovies.services;
 
+import com.fran.mymovies.entity.Movie;
 import com.fran.mymovies.entity.TvSerie;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -9,7 +11,9 @@ import java.util.List;
  */
 public interface ITvSerieService {
 
-    public List<TvSerie> findAll();
+    List<TvSerie> findAll();
 
-    public TvSerie findById(Long id);
+    TvSerie findById(Long id);
+
+    Page<TvSerie> findPage(int pageNumber);
 }

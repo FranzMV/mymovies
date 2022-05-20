@@ -34,6 +34,39 @@
 .box-shadow { box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05); }
 
 .card:hover{
-  box-shadow: 5px 6px 6px 2px #e9ecef;
-  transform: scale(1.1);
+  box-shadow: 6px 6px 6px 3px #e9ecef;
+  transform: scale(1.05);
+}
+
+.gradient-custom-4 {
+/* fallback for old browsers */
+background: #84fab0;
+
+/* Chrome 10-25, Safari 5.1-6 */
+background: -webkit-linear-gradient(to right, rgba(132, 250, 176, 1), rgba(143, 211, 244, 1));
+
+/* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+background: linear-gradient(to right, rgba(132, 250, 176, 1), rgba(143, 211, 244, 1))
+
+
+}
+
+.gradient-custom-5{
+     /* ff 3.6+ */
+        background:-moz-linear-gradient(90deg, rgba(255, 235, 59, 1) 0%, rgba(233, 30, 99, 1) 100%);
+
+        /* safari 5.1+,chrome 10+ */
+        background:-webkit-linear-gradient(90deg, rgba(255, 235, 59, 1) 0%, rgba(233, 30, 99, 1) 100%);
+
+        /* opera 11.10+ */
+        background:-o-linear-gradient(90deg, rgba(255, 235, 59, 1) 0%, rgba(233, 30, 99, 1) 100%);
+
+        /* ie 6-9 */
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e91e63', endColorstr='#FFEB3B', GradientType=0 );
+
+        /* ie 10+ */
+        background:-ms-linear-gradient(90deg, rgba(255, 235, 59, 1) 0%, rgba(233, 30, 99, 1) 100%);
+
+        /* global 94%+ browsers support */
+        background:linear-gradient(90deg, rgba(255, 235, 59, 1) 0%, rgba(233, 30, 99, 1) 100%);
 }

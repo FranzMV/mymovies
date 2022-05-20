@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <title th:text="${title}"></title>
@@ -9,6 +9,7 @@
     <link rel="stylesheet" type="text/css" th:href="@{/css/movieslist.css}">
 </head>
 <body>
+
 <header th:insert="fragments :: nav"></header>
 <main role="main">
     <div class="album py-5">
@@ -17,31 +18,28 @@
                 <div class="col-md-4" th:each="movie: ${movies}"
                      th:object="${movie}">
                     <div id="card">
-                        <div class="card mb-4 " th:href="@{/movie/{id}(id=*{id})}">
-                            <img class="card-img-top"
-                                 th:src="|${urlImage}${movie.backdrop_path}|"
-                                 alt="Card image cap">
-                            <div class="card-body">
-                                <h5 class="card-title" th:text="*{title}"></h5>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <ul class="list-group list-group-flush">
-                                        <li class="list-group-item disabled"
-                                            th:text="'Fecha de estreno: '+ *{release_date}"></li>
-                                        <li class="list-group-item disabled">
-                                                <span th:each="a, g : *{genres}"
-                                                      th:text="${!g.last} ? ${a.name} + ',': ${a.name}"></span>&nbsp;
-
-                                        </li>
-                                        <li class="list-group-item">
-                                            <span>Puntuación:</span>
-                                            <span class="badge circle circle-md text-white bg-success mr-2" th:text=
-                                                    "*{vote_average}">
-                                            </span>
-                                        </li>
-                                    </ul>
+                        <a  th:href="@{/movies/detail/{id}(id=*{id})}" style="text-decoration: none;color: inherit;">
+                            <div class="card mb-4 shadow p-3 mb-5 bg-body rounded">
+                                <img class="card-img-top" th:src="|${urlImage}${movie.backdrop_path}|"
+                                     alt="Imagen no disponible">
+                                <div class="card-body">
+                                    <h5 class="card-title" th:text="*{title}"></h5>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <ul class="list-group list-group-flush">
+                                            <li class="list-group-item disabled"
+                                                th:text="'Fecha de estreno: '+ *{release_date}"></li>
+                                            <li class="list-group-item disabled">
+                                                <span th:each="a, g : *{genres}" th:text="${!g.last} ? ${a.name} + ',': ${a.name}"></span>&nbsp;
+                                            </li>
+                                            <li class="list-group-item">
+                                                <span class="text-secondary">Puntuación:</span>
+                                                <span class="badge circle circle-md text-white gradient-custom-5 mr-2" th:text="*{vote_average}"></span>
+                                            </li>
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                     </div>
                 </div>
                 <div class="row">
@@ -51,7 +49,7 @@
                             <ul class="pagination justify-content-center">
                                 <li class="page-item"
                                     th:classappend="@{prevPage == 0 ? 'disabled' : ''}">
-                                    <a class="page-link text-secondary "
+                                    <a class="page-link text-secondary  "
                                        th:href="@{'/movies/page/' + ${prevPage}}"
                                        th:text="Anterior"></a>
                                 </li>

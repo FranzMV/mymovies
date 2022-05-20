@@ -6,6 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,11 +29,17 @@ public class TvSerieServiceImpl implements ITvSerieService{
     @Override
     @Transactional(readOnly = true)
     public List<TvSerie> findAll() {
-        return (List<TvSerie>) tvSeriesDAO.findAll();
+        return  tvSeriesDAO.findAll();
     }
 
     @Override
     public TvSerie findById(Long id) {
         return tvSeriesDAO.findById(id).orElse(null);
+    }
+
+    @Override
+    public Page<TvSerie> findPage(int pageNumber) {
+        Pageable pageable = PageRequest.of(pageNumber -1, 12);
+        return tvSeriesDAO.findAll(pageable);
     }
 }

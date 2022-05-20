@@ -1,7 +1,7 @@
 package com.fran.mymovies.controllers;
 
-import com.fran.mymovies.entity.Movie;
-import com.fran.mymovies.services.MovieServiceImpl;
+import com.fran.mymovies.entity.TvSerie;
+import com.fran.mymovies.services.TvSerieServiceImpl;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,22 +15,23 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-
 /**
  * @author Francisco David Manzanedo.
- */
+ * */
+
 @Getter
 @Setter
 @NoArgsConstructor
 @Slf4j
 @Controller
-@RequestMapping("/movies")
-public class MovieViewController {
+@RequestMapping("/tvseries")
+public class TvSerieController {
 
     @Autowired
-    private MovieServiceImpl movieService;
+    private TvSerieServiceImpl tvSerieService;
 
     private final String URL_IMAGE ="https://image.tmdb.org/t/p/w500";
+
     private final String URL_ORIGINAL_IMAGE ="https://image.tmdb.org/t/p/original";
 
     /**
@@ -52,35 +53,39 @@ public class MovieViewController {
      */
     @GetMapping("/page/{pageNumber}")
     public String getOnePage(Model model, @PathVariable("pageNumber") int currentPage){
-        Page<Movie> page = movieService.findPage(currentPage);
-        model.addAttribute("title", "Movies");
+        Page<TvSerie> page = tvSerieService.findPage(currentPage);
+        model.addAttribute("title", "TV Series");
         model.addAttribute("urlImage", URL_IMAGE);
         model.addAttribute("currentPage", currentPage);
         model.addAttribute("nextPage", currentPage +1);
         model.addAttribute("prevPage", currentPage -1);
         model.addAttribute("totalPages", page.getTotalPages());
         model.addAttribute("totalItems", page.getTotalElements());
-        model.addAttribute("movies", page.getContent());
-        return "movies/movies-list";
+        model.addAttribute("tvseries", page.getContent());
+
+        return "series/tvseries-list";
     }
 
     /**
      *
-     * @param model
      * @param id
      * @return
      */
     @GetMapping("/detail/{id}")
-    public ModelAndView movieDetail(Model model, @PathVariable("id") Long id){
-        Movie selectedMovie = movieService.findById(id);
-        if(selectedMovie == null){
+    public ModelAndView tvSerieDetail(@PathVariable("id") Long id){
+        TvSerie selectedTvSerie = tvSerieService.findById(id);
+
+        if(selectedTvSerie== null){
             log.info("Entra null");
-            return new ModelAndView("redirect: /movies/");
+            return new ModelAndView(" /tvseries/");
         }
-        ModelAndView mv = new ModelAndView("movies/movie-detail");
-        mv.addObject("selectedMovie", selectedMovie);
-        mv.addObject("title", selectedMovie.getTitle());
+        ModelAndView mv = new ModelAndView("series/tvserie-detail");
+        mv.addObject("selectedTvSerie", selectedTvSerie);
+        mv.addObject("title", selectedTvSerie.getTitle());
         mv.addObject("urlImage", URL_ORIGINAL_IMAGE);
+       // mv.addObject("currentPage", page.getNumber());
+        log.info(selectedTvSerie.getPoster_path());
+        //log.info(String.valueOf(page.getNumber()));
         return mv;
     }
 }

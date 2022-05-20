@@ -12,12 +12,13 @@
     <div class="container h-100">
         <div class="row d-flex justify-content-center align-items-center h-100">
             <div class="col-12 col-md-9 col-lg-7 col-xl-6">
-                <div class="card" style="border-radius: 15px;">
-                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                        <strong>Holy guacamole!</strong> You should check in on some of those fields below.
+                <div class="card border-dark mb-3" style="border-radius: 15px;">
+                    <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong>Holy guacamole!</strong> <p th:text="${error}"></p>
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
                     <div class="card-body p-5">
+                        <p class="text-center text-secondary fs-1  mb-5" >Nuevo Usuario</p>
                         <form>
                             <div class="form-outline mb-4">
                                 <input type="text" id="nombre" class="form-control form-control-lg text-center" required
