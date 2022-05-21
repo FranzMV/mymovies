@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title th:text="${title}"></title>
@@ -54,12 +54,12 @@
                             </li>
                         </ul>
                     </div>
-                    <select class="form-select form-select-lg mt-3" aria-label=".form-select-lg example">
-                        <option selected>Añadir a la lista </option>
-                        <option value="1">Vistas</option>
-                        <option value="2">Favoritas</option>
-                        <option value="3">Pendientes</option>
-                    </select>
+                        <select class="form-select form-select-lg mt-3" aria-label=".form-select-lg example">
+                            <option selected th:value="0">Añadir a la lista </option>
+                            <option th:value="1" th:text="Vista"></option>
+                            <option th:value="2" th:text="Favorita"></option>
+                            <option th:value="3" th:text="Pendiente"></option>
+                        </select>
                 </div>
             </div>
         </div>

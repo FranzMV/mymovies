@@ -33,6 +33,8 @@ public class MovieViewController {
     private final String URL_IMAGE ="https://image.tmdb.org/t/p/w500";
     private final String URL_ORIGINAL_IMAGE ="https://image.tmdb.org/t/p/original";
 
+
+
     /**
      * Vista principal.
      * @param model Model.
@@ -66,12 +68,11 @@ public class MovieViewController {
 
     /**
      *
-     * @param model
      * @param id
      * @return
      */
     @GetMapping("/detail/{id}")
-    public ModelAndView movieDetail(Model model, @PathVariable("id") Long id){
+    public ModelAndView movieDetail(@PathVariable("id") Long id){
         Movie selectedMovie = movieService.findById(id);
         if(selectedMovie == null){
             log.info("Entra null");
@@ -82,5 +83,12 @@ public class MovieViewController {
         mv.addObject("title", selectedMovie.getTitle());
         mv.addObject("urlImage", URL_ORIGINAL_IMAGE);
         return mv;
+    }
+
+    @GetMapping("/addlist/{id}")
+    public String addListToUser(@PathVariable("id") Long id){
+        log.info("Id Peli: "+ id);
+
+        return "index";
     }
 }

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <title>My Movies</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -19,7 +19,7 @@
                     </div>
                     <div class="card-body p-5">
                         <p class="text-center text-secondary fs-1  mb-5" >Nuevo Usuario</p>
-                        <form>
+                        <form th:action="@{/user/register}" method="post">
                             <div class="form-outline mb-4">
                                 <input type="text" id="nombre" class="form-control form-control-lg text-center" required
                                        placeholder="Nombre"/>

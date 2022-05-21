@@ -12,7 +12,7 @@ DROP TABLE IF EXISTS tv_series;
 DROP TABLE IF EXISTS movies;
 DROP TABLE IF EXISTS users;
 
-
+/*
 CREATE TABLE users(
 	id SERIAL PRIMARY KEY NOT NULL,
 	name VARCHAR(100),
@@ -137,3 +137,4 @@ CREATE TABLE pending_tv_series(
 	FOREIGN KEY (user_id) REFERENCES users(id),
 	FOREIGN KEY (tv_series_id) REFERENCES tv_series(id)
 );
+*/

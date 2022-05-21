@@ -1,13 +1,30 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-
-<title th:text="${title}"></title>
+<html  xmlns:th="http://www.thymeleaf.org"
+       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
-    <meta charset="utf-8">
-    <title th:text="${title}"></title>
-    <link rel="stylesheet" type="text/css" th:href="@{/css/index.css}">
+    <title>My Movies</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/registration.css}">
 </head>
 <body>
-
+<header></header>
+<div id="contenido">
+    <div class="container">
+        <div class="jumbotron">
+            <h1 class="display-4 text-white" sec:authorize="!isAuthenticated()">Debes iniciar sesión</h1>
+            <h1 class="display-4" sec:authorize="isAuthenticated()">Hola
+                <span sec:authentication="name"></span></h1>
+            <p class="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
+            <hr class="my-4">
+            <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
+            <a class="btn btn-primary btn-lg" th:href="@{mymovies/login}" role="button"
+               style="background: linear-gradient(to right, rgba(132, 250, 176, 1), rgba(143, 211, 244, 1))">Ir</a>
+        </div>
+    </div>
+</div>
+<!--<footer th:insert="fragments :: footer"></footer>-->
+<div th:insert="fragments :: scripts"></div>
 </body>
 </html>

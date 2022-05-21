@@ -20,6 +20,7 @@ public class TvSerie {
     private Long id;
     private String original_language;
     private String original_title;
+    @Column(length = 10485760)
     private String overview;
     private Double popularity;
     private String poster_path;

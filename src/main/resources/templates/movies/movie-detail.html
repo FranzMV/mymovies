@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sc="http://www.thymeleaf.org/extras/spring-security">
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
   <title th:text="${title}"></title>
@@ -8,10 +9,18 @@
   <!--<link rel="stylesheet" type="text/css" th:href="@{}">-->
 </head>
 <body>
-
 <div class="row d-flex justify-content-center align-items-center">
-    <div class="card shadow-lg p-3 mb-5 mt-5 bg-body rounded" style="border-radius: 15px; width:1110px; height:800px;"
-         th:object="${selectedMovie}">
+    <div class="card shadow-lg p-3 mb-5 mt-5 bg-body rounded" style="border-radius: 15px; width:1110px; height:800px;" th:object="${selectedMovie}">
+        <div class="clearfix">
+            <a class="nav-link" th:href="@{/movies/}">
+                <button class="btn btn-secondary mt-1 md-2 float-end"  data-bs-toggle="tooltip"
+                        data-bs-placement="top" title="Volver" style="float:right;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left-circle" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z"/>
+                    </svg>
+                </button>
+            </a>
+        </div>
       <div class="row g-0">
         <div class="col-sm-5">
           <img class="card-img-top h-100 rounded" th:src="|${urlImage}${selectedMovie.poster_path}|" alt="Imagen no disponible">
@@ -54,29 +63,29 @@
                 </li>
               </ul>
             </div>
-            <select class="form-select form-select-lg mt-3 gradient-custom-4" aria-label=".form-select-lg example">
-              <option selected>Añadir a la lista </option>
-              <option value="1">Vistas</option>
-              <option value="2">Favoritas</option>
-              <option value="3">Pendientes</option>
+            <select class="form-select form-select-lg mt-3" aria-label=".form-select-lg" id="dropDownOptions">
+              <option selected disabled>Añadir a la lista </option>
+              <option value="0">Añadir a la lista</option>
+              <option value="2">Favorita</option>
+              <option value="2">Vista</option>
+              <option value="3">Pendiente</option>
             </select>
           </div>
         </div>
       </div>
         <div class="clearfix">
-            <a class="nav-link" th:href="@{/movies/}">
-                <button class="btn btn-secondary mt-5 md-2 float-end" style="float:right;">
+            <a class="nav-link" th:href="@{/movies/addlist/{id}(id=*{id})}">
+                <button class="btn btn btn-success mt-1 md-2 float-end" style="float:right; width:100px; height:50px"
+                        type="submit">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left-circle" viewBox="0 0 16 16">
                         <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z"/>
-                    </svg> Volver
+                    </svg> Añadir
                 </button>
             </a>
         </div>
     </div>
   </div>
-
-
-
 <div th:insert="fragments :: scripts"></div>
 </body>
+
 </html>
