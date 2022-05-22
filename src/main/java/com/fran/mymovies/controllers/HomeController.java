@@ -20,11 +20,11 @@ public class HomeController {
 
     @GetMapping("/registration")
     public String registration(){
-        return "user/registration";
+        return "user/register";
     }
 
-    @GetMapping("/forbidden")
-    public String forbidden(){
-        return "/errors/forbidden";
-    }
+//    @GetMapping("/forbidden")
+//    public String forbidden(){
+//        return "/errors/forbidden";
+//    }
 }

@@ -1,5 +1,5 @@
 package com.fran.mymovies.entity.enums;
 
-public enum ListType {
+public enum ListTypeName {
     PENDIENTE, FAVORITA, VISTA;
 }

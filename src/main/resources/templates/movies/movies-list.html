@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:sc="http://www.thymeleaf.org/extras/spring-security">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <title th:text="${title}"></title>
@@ -15,13 +14,11 @@
     <div class="album py-5">
         <div class="container" >
             <div class="row">
-                <div class="col-md-4" th:each="movie: ${movies}"
-                     th:object="${movie}">
+                <div class="col-md-4" th:each="movie: ${movies}" th:object="${movie}">
                     <div id="card">
                         <a  th:href="@{/movies/detail/{id}(id=*{id})}" style="text-decoration: none;color: inherit;">
                             <div class="card mb-4 shadow p-3 mb-5 bg-body rounded">
-                                <img class="card-img-top" th:src="|${urlImage}${movie.backdrop_path}|"
-                                     alt="Imagen no disponible">
+                                <img class="card-img-top" th:src="|${urlImage}${movie.backdrop_path}|" alt="Imagen no disponible">
                                 <div class="card-body">
                                     <h5 class="card-title" th:text="*{title}"></h5>
                                     <div class="d-flex justify-content-between align-items-center">
@@ -49,20 +46,15 @@
                             <ul class="pagination justify-content-center">
                                 <li class="page-item"
                                     th:classappend="@{prevPage == 0 ? 'disabled' : ''}">
-                                    <a class="page-link text-secondary  "
-                                       th:href="@{'/movies/page/' + ${prevPage}}"
-                                       th:text="Anterior"></a>
+                                    <a class="page-link text-secondary" th:href="@{'/movies/page/' + ${prevPage}}" th:text="Anterior"></a>
                                 </li>
                                 <li class="page-item"
                                     th:each="i: ${#numbers.sequence(totalItems + 1, totalPages > 10 + totalItems ? totalItems + 10 : totalPages, 1 )}"
                                     th:classappend="${currentPage == i ? 'active' : ''} ">
-                                    <a class="page-link" th:href="@{'/movies/page/' + ${i}}"
-                                       th:text="${i}"></a>
-
+                                    <a class="page-link" th:href="@{'/movies/page/' + ${i}}" th:text="${i}"></a>
                                 </li>
                                 <li class="page-item" th:classappend="@{current == totalPages ? 'disabled' : ''}">
-                                    <a class="page-link text-secondary"
-                                       th:href="@{'/movies/page/' + ${nextPage}}" th:text="Siguiente">
+                                    <a class="page-link text-secondary" th:href="@{'/movies/page/' + ${nextPage}}" th:text="Siguiente">
                                     </a>
                                 </li>
                             </ul>

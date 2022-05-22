@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>My Movies</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -19,40 +19,38 @@
                     </div>
                     <div class="card-body p-5">
                         <p class="text-center text-secondary fs-1  mb-5" >Nuevo Usuario</p>
-                        <form th:action="@{/user/register}" method="post">
+                        <form th:action="@{/user/registration}" th:object="${user}"  method="post" >
                             <div class="form-outline mb-4">
-                                <input type="text" id="nombre" class="form-control form-control-lg text-center" required
+                                <input type="text" th:field="*{name}"
+                                       class="form-control form-control-lg text-center"
                                        placeholder="Nombre"/>
                             </div>
 
                             <div class="form-outline mb-4">
-                                <input type="email" id="form3Example3cg" class="form-control form-control-lg text-center"
+                                <input type="text"  th:field="*{userName}"
+                                       class="form-control form-control-lg text-center"
                                        placeholder="Usuario"/>
                             </div>
 
                             <div class="form-outline mb-4">
-                                <input type="password" id="form3Example4cg"
-                                       class="form-control form-control-lg text-center" placeholder="Email"/>
+                                <input type="text"  th:field="*{email}"
+                                       class="form-control form-control-lg text-center"
+                                       placeholder="Email"/>
                             </div>
 
                             <div class="form-outline mb-4">
-                                <input type="password"
+                                <input type="password"  th:field="*{password}"
                                        class="form-control form-control-lg text-center" placeholder="Password"/>
                             </div>
-                            <div class="form-outline mb-4">
-                                <input type="password" id="form3Example4cdg"
-                                       class="form-control form-control-lg text-center" placeholder="Repetir password"/>
-                            </div>
                             <div class="d-flex justify-content-center mt-5">
-                                <button type="button"
-                                        class="btn btn-success btn-block btn-lg gradient-custom-4 ">
+                                <button type="submit" class="btn btn-success btn-block btn-lg gradient-custom-4 ">
                                     Registrarse
                                 </button>
                             </div>
                         </form>
                     </div>
                     <p class="text-center text-muted mt-5 mb-5">¿Ya tiene una cuenta?
-                        <a th:href="@{/mymovies/login}"
+                        <a th:href="@{/login}"
                            class="card-link">
                             <u>Login aquí</u>
                         </a>

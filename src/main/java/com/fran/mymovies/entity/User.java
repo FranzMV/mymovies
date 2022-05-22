@@ -1,13 +1,9 @@
 package com.fran.mymovies.entity;
 
-import com.fran.mymovies.entity.enums.ListType;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.fran.mymovies.entity.enums.ListTypeName;
+import lombok.*;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -15,6 +11,7 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 @Entity
 @Table(name="`users`")
 public class User {
@@ -24,15 +21,21 @@ public class User {
     @Column(name = "user_id")
     private Long id;
     private String name;
-    @NotNull
+
     @Column( name = "user_name", unique = true)
     private String userName;
-    @NotNull
+
+    @Column(name = "user_email")
+    private String email;
+
+
     @Column(unique = true)
     private String password;
 
-    @Transient
-    private ListType listType;
+    @ManyToMany(fetch = FetchType.EAGER)//Para mostrar el usuario y sus roles
+    @JoinTable(name = "user_type_list", joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "list_type_id"))
+    private Set<ListType> listTypes = new HashSet<>();
 
     @ManyToMany(fetch = FetchType.EAGER)//Para mostrar el usuario y sus roles
     @JoinTable(name = "rol_user", joinColumns = @JoinColumn(name = "user_id"),
@@ -69,9 +72,10 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "tv_serie_id"))
     private Set<TvSerie> watched_tvSeries = new HashSet<>();
 
-    public User(String name, String userName, String password) {
+    public User(String name, String userName, String email, String password) {
         this.name = name;
         this.userName = userName;
+        this.email = email;
         this.password = password;
     }
 }

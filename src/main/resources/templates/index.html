@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html  xmlns:th="http://www.thymeleaf.org"
-       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html  xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>My Movies</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -9,19 +8,15 @@
     <link rel="stylesheet" type="text/css" th:href="@{/css/registration.css}">
 </head>
 <body>
-<header></header>
 <div id="contenido">
     <div class="container">
-        <div class="jumbotron">
-            <h1 class="display-4 text-white" sec:authorize="!isAuthenticated()">Debes iniciar sesión</h1>
-            <h1 class="display-4" sec:authorize="isAuthenticated()">Hola
-                <span sec:authentication="name"></span></h1>
+            <h1 class="display-4 text-white" >Debes iniciar sesión</h1>
+            <h1 class="display-4 text-white" >Hola<span class="text-white"></span></h1>
             <p class="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
             <hr class="my-4">
             <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
-            <a class="btn btn-primary btn-lg" th:href="@{mymovies/login}" role="button"
+            <a class="btn btn-primary btn-lg" th:href="@{/login}"
                style="background: linear-gradient(to right, rgba(132, 250, 176, 1), rgba(143, 211, 244, 1))">Ir</a>
-        </div>
     </div>
 </div>
 <!--<footer th:insert="fragments :: footer"></footer>-->
