@@ -36,9 +36,10 @@
                 <li class="list-group-item disabled"
                     th:text="'Título original: '+ *{original_title}">
                 </li>
-                <li class="list-group-item disabled"
-                    th:text="'Fecha de estreno: '+ *{release_date}">
-                </li>
+                  <li class="list-group-item disabled"
+                      th:with="testString= *{release_date}"
+                      th:text="'Año de estreno: '+ ${testString.replaceFirst('-.*', '')}">
+                  </li>
                <li class="list-group-item disabled">
                  <span th:each="a, g : *{genres}" th:text="${!g.last} ? ${a.name} + ',': ${a.name}"></span>&nbsp;
                </li>

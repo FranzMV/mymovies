@@ -32,7 +32,7 @@ public class TvSerieRestController {
     }
 
     @GetMapping("/tvseries/{id}")
-    public ResponseEntity<?> show(@PathVariable Long id){
+    public ResponseEntity<?> getTySerieById(@PathVariable Long id){
         TvSerie tvSerie;
         Map<String, Object> response = new HashMap<>();
 
