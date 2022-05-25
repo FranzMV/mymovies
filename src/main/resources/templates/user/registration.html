@@ -11,31 +11,29 @@
 <div id="contenido">
     <div class="container h-100">
         <div class="row d-flex justify-content-center align-items-center h-100">
-            <div class="col-12 col-md-9 col-lg-7 col-xl-6">
+            <div class="col-12 col-md-9 col-lg-7 col-xl-6" style="width:410px;">
                 <div class="card border-dark mb-3" style="border-radius: 15px;">
                     <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
                         <strong>Holy guacamole!</strong> <p th:text="${error}"></p>
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
-                    <div class="card-body p-5">
+                    <div class="card-body p-5 ">
                         <p class="text-center text-secondary fs-1  mb-5" >Nuevo Usuario</p>
                         <form th:action="@{/user/registration}" th:object="${user}"  method="post" >
-                            <div class="form-outline mb-4">
-                                <input type="text" th:field="*{name}"
-                                       class="form-control form-control-lg text-center"
-                                       placeholder="Nombre"/>
+                            <div class="form-outline mb-4"><input type="text" th:field="*{name}" class="form-control form-control-lg text-center"
+                                       placeholder="Nombre" required/>
                             </div>
 
                             <div class="form-outline mb-4">
                                 <input type="text"  th:field="*{userName}"
                                        class="form-control form-control-lg text-center"
-                                       placeholder="Usuario"/>
+                                       placeholder="Usuario" required/>
                             </div>
 
                             <div class="form-outline mb-4">
                                 <input type="text"  th:field="*{email}"
                                        class="form-control form-control-lg text-center"
-                                       placeholder="Email"/>
+                                       placeholder="Email" required/>
                             </div>
 
                             <div class="form-outline mb-4">
@@ -50,7 +48,7 @@
                         </form>
                     </div>
                     <p class="text-center text-muted mt-5 mb-5">¿Ya tiene una cuenta?
-                        <a th:href="@{/login}"
+                        <a th:href="@{/user/login}"
                            class="card-link">
                             <u>Login aquí</u>
                         </a>

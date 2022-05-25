@@ -11,7 +11,7 @@
 <div class="row d-flex justify-content-center align-items-center">
     <div class="card shadow-lg p-3 mb-5 mt-5 bg-body rounded" style="border-radius: 15px; width:1110px; height:800px;" th:object="${selectedMovie}">
         <div class="clearfix">
-            <a class="nav-link" th:href="@{/movies/}">
+            <a class="nav-link" th:href="@{/movies/all}">
                 <button class="btn btn-secondary mt-1 md-2 float-end"  data-bs-toggle="tooltip"
                         data-bs-placement="top" title="Volver" style="float:right;">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left-circle" viewBox="0 0 16 16">
@@ -56,9 +56,11 @@
                 </li>
                 <li class="list-group-item disabled">
                     <span class="text-secondary">Popularidad: </span>
-                    <span class="badge circle circle-md text-white mr-2"
-                          style=" background:linear-gradient(90deg, rgba(233, 30, 99, 1) 0%, rgba(0, 188, 212, 1) 100%);"
-                          th:text="*{popularity}"></span>
+                    <span th:with="result=*{popularity % 1000}">
+                       <span class="badge circle circle-md text-white mr-2"
+                             style=" background:linear-gradient(90deg, rgba(233, 30, 99, 1) 0%, rgba(0, 188, 212, 1) 100%);"
+                             th:text="${result} == 0 ? ${result} : ${#numbers.formatDecimal(result, 0,2)} + '%'"></span>
+                    </span>
                 </li>
               </ul>
             </div>

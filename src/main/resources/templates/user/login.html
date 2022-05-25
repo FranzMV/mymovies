@@ -11,35 +11,44 @@
     <section id="contenido">
         <div class="container h-100">
             <div class="row d-flex justify-content-center align-items-center h-100">
-                <div class="col-12 col-md-5 col-lg-7 col-xl-7" style="width:410px;">
+                <div class="col-12 col-md-5 col-lg-7 col-xl-7" style="width:410px;" th:object="${user}">
                     <div class="card" style="border-radius: 15px;" >
                         <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
-                            <strong>Holy guacamole!</strong> <p th:text="${error}"></p>
+                            <strong>ERROR!</strong> <p th:text="${error}"></p>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                        <div th:if="${okRegister}" class="alert alert-success alert-dismissible fade show" role="alert">
+                            <strong>!Bienvenido!</strong> <p th:text="*{userName}"></p>
+                            <p th:text="${okRegister}"></p>
                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
                         <div class="card-body my-5">
-                            <p class="text-center text-secondary fs-1  mb-5" >Login</p>
-                            <form method="post" >
-                                <div class="form-group col-auto mb-4">
-                                    <label for="userName"></label>
-                                    <input type="text" id="userName" name="userName" class="form-control form-control-lg text-center" placeholder="Usuario"/>
+                          <p class="text-center text-secondary fs-1  mb-5"> Login </p>
+                            <form  class=" needs-validation" th:action="@{/user/signin}"  method="post" >
+                                <div class="form-group col-auto mb-4" >
+                                    <input type="text" th:field="*{userName}" class="form-control form-control-lg text-center" placeholder="Usuario" required/>
+                                    <div class="invalid-feedback">
+                                        Por favor, rellene el campo usuario
+                                    </div>
                                 </div>
                                 <div class="col-auto mb-4">
-                                    <label for="password"></label>
-                                    <input type="password" id="password" name="password" class="form-control form-control-lg text-center" placeholder="Password"/>
+                                    <input type="password" th:field="*{password}"
+                                           class="form-control form-control-lg text-center" placeholder="Contraseña"
+                                           required/>
                                 </div>
                                 <div class="d-flex justify-content-center mt-5"  >
-                                    <button class="btn btn-success btn-block btn-lg gradient-custom-4 text-white">Iniciar Sesión</button>
+                                    <button class="btn btn-success btn-block btn-lg gradient-custom-4 text-white"
+                                            type="submit">Iniciar Sesión</button>
                                 </div>
                                 <div class="mt-5 form-check d-flex justify-content-center">
                                     <input type="checkbox" class="form-check-input" id="checkRememberMe" name="checkRememberMe">
-                                    <label class="form-check-label" for="checkRememberMe">Recordarme</label>
+                                    <label class="form-check-label" for="checkRememberMe"> Recordarme</label>
                                 </div>
                             </form>
-                            <p class="d-flex justify-content-center mt-2">Ya has iniciado sesión</p>
+<!--                            <p class="d-flex justify-content-center mt-2">Ya has iniciado sesión</p>-->
 
                         </div>
-                        <p class="text-center text-muted"  >¿No tiene una cuenta?
+                        <p class="text-center text-muted">¿No tiene una cuenta?
                             <a th:href="@{/user/register}" class="card-link my-5">
                                 <u>Registrarse aquí</u>
                             </a>

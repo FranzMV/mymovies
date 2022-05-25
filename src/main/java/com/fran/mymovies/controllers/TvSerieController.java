@@ -1,7 +1,9 @@
 package com.fran.mymovies.controllers;
 
 import com.fran.mymovies.entity.TvSerie;
+import com.fran.mymovies.entity.User;
 import com.fran.mymovies.services.TvSerieServiceImpl;
+import com.fran.mymovies.services.UserServiceImpl;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -30,27 +32,32 @@ public class TvSerieController {
     @Autowired
     private TvSerieServiceImpl tvSerieService;
 
+    @Autowired
+    private UserServiceImpl userService;
+
+    @Autowired
+    UserController userController;
+
+    private User actualUser;
+
     private final String URL_IMAGE ="https://image.tmdb.org/t/p/w500";
 
-    private final String URL_ORIGINAL_IMAGE ="https://image.tmdb.org/t/p/original";
+    private final String URL_ORIGINAL_IMAGE ="https://image.tmdb.org/t/p/w500";
 
     /**
      * Vista principal.
      * @param model Model.
      * @return ruta people/index.
      */
-    @GetMapping("/")
+    @GetMapping("/all")
     public String getAllMovies(Model model) {
+        actualUser = userController.getActualUser();
+        model.addAttribute("user", actualUser.getUserName());
         return getOnePage(model, 1);
     }
 
 
-    /**
-     *
-     * @param model
-     * @param currentPage
-     * @return
-     */
+
     @GetMapping("/page/{pageNumber}")
     public String getOnePage(Model model, @PathVariable("pageNumber") int currentPage){
         Page<TvSerie> page = tvSerieService.findPage(currentPage);
@@ -62,7 +69,7 @@ public class TvSerieController {
         model.addAttribute("totalPages", page.getTotalPages());
         model.addAttribute("totalItems", page.getTotalElements());
         model.addAttribute("tvseries", page.getContent());
-
+        model.addAttribute("user", actualUser.getUserName());
         return "series/tvseries-list";
     }
 
@@ -74,7 +81,6 @@ public class TvSerieController {
     @GetMapping("/detail/{id}")
     public ModelAndView tvSerieDetail(@PathVariable("id") Long id){
         TvSerie selectedTvSerie = tvSerieService.findById(id);
-
         if(selectedTvSerie== null){
             log.info("Entra null");
             return new ModelAndView(" /tvseries/");
@@ -83,6 +89,8 @@ public class TvSerieController {
         mv.addObject("selectedTvSerie", selectedTvSerie);
         mv.addObject("title", selectedTvSerie.getTitle());
         mv.addObject("urlImage", URL_ORIGINAL_IMAGE);
+        mv.addObject("listTypes", actualUser.getListTypes());
+        mv.addObject("user", actualUser);
        // mv.addObject("currentPage", page.getNumber());
         log.info(selectedTvSerie.getPoster_path());
         //log.info(String.valueOf(page.getNumber()));
