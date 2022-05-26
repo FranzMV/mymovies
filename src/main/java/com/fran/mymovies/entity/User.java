@@ -1,9 +1,9 @@
 package com.fran.mymovies.entity;
 
-import com.fran.mymovies.entity.enums.ListTypeName;
 import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -14,7 +14,7 @@ import java.util.Set;
 @ToString
 @Entity
 @Table(name="`users`")
-public class User {
+public class User implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,14 +22,13 @@ public class User {
     private Long id;
     private String name;
 
+
     @Column( name = "user_name", unique = true)
     private String userName;
 
-    @Column(name = "user_email")
+    @Column(name = "user_email", unique = true)
     private String email;
 
-
-    @Column(unique = true)
     private String password;
 
     @ManyToMany(fetch = FetchType.EAGER)//Para mostrar el usuario y sus roles

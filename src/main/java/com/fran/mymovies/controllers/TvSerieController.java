@@ -3,6 +3,7 @@ package com.fran.mymovies.controllers;
 import com.fran.mymovies.entity.TvSerie;
 import com.fran.mymovies.entity.User;
 import com.fran.mymovies.services.TvSerieServiceImpl;
+import com.fran.mymovies.services.TvSeriesGenresImpl;
 import com.fran.mymovies.services.UserServiceImpl;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -36,7 +37,10 @@ public class TvSerieController {
     private UserServiceImpl userService;
 
     @Autowired
-    UserController userController;
+    private UserController userController;
+
+    @Autowired
+    private TvSeriesGenresImpl tvSeriesGenresService;
 
     private User actualUser;
 
@@ -44,18 +48,14 @@ public class TvSerieController {
 
     private final String URL_ORIGINAL_IMAGE ="https://image.tmdb.org/t/p/w500";
 
-    /**
-     * Vista principal.
-     * @param model Model.
-     * @return ruta people/index.
-     */
+
     @GetMapping("/all")
     public String getAllMovies(Model model) {
         actualUser = userController.getActualUser();
         model.addAttribute("user", actualUser.getUserName());
+        model.addAttribute("tvGenres",tvSeriesGenresService.findAll());
         return getOnePage(model, 1);
     }
-
 
 
     @GetMapping("/page/{pageNumber}")
@@ -73,11 +73,6 @@ public class TvSerieController {
         return "series/tvseries-list";
     }
 
-    /**
-     *
-     * @param id
-     * @return
-     */
     @GetMapping("/detail/{id}")
     public ModelAndView tvSerieDetail(@PathVariable("id") Long id){
         TvSerie selectedTvSerie = tvSerieService.findById(id);

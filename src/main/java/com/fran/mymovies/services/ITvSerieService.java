@@ -1,6 +1,4 @@
 package com.fran.mymovies.services;
-
-import com.fran.mymovies.entity.Movie;
 import com.fran.mymovies.entity.TvSerie;
 import org.springframework.data.domain.Page;
 

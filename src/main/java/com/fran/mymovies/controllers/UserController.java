@@ -6,6 +6,7 @@ import com.fran.mymovies.entity.User;
 import com.fran.mymovies.entity.enums.ListTypeName;
 import com.fran.mymovies.entity.enums.RoleName;
 import com.fran.mymovies.services.IListTypeService;
+import com.fran.mymovies.services.MovieServiceImpl;
 import com.fran.mymovies.utils.Utils;
 import jdk.jshell.execution.Util;
 import lombok.AllArgsConstructor;
@@ -57,30 +58,26 @@ public class UserController {
 
     @RequestMapping("/signin")
     public ModelAndView signin(@Valid User user){
+        actualUser = new User();
         ModelAndView mv = new ModelAndView("redirect:/movies/all/");
-        boolean userNameExists = false;
-        boolean passwordExists = false;
-        String passwordEncoded = Utils.getMd5(user.getPassword());
         Optional<User> userExists = userService.getUserByName(user.getUserName());
         if(userExists.isPresent()){
-            actualUser =userExists.get();
+            log.info("Nombre de usuario correcto.");
+            String passwordEncoded = Utils.getMd5(user.getPassword());
+            if(userExists.get().getPassword().equals(passwordEncoded)){
+                log.info("Password Correcto");
+                actualUser = userExists.get();
+            }else{
+                log.info("Password incorrecto");
+                mv.setViewName("user/login");
+                mv.addObject("error", "La contraseña no es correcta.");
+                return mv;
+            }
         }else{
+            log.info("NO esta registrado en la base de datos");
             mv.setViewName("user/login");
             mv.addObject("error", "Nombre de usuario o contraseña incorrectos.");
             return mv;
-        }
-
-        if(actualUser.getUserName().equals(user.getUserName())){
-            userNameExists = true;
-            log.info("Optional user exists");
-        }
-        if(actualUser.getPassword().equals(passwordEncoded)){
-            passwordExists = true;
-            log.info("Optional user password");
-        }
-
-        if(userNameExists && passwordExists){
-            mv.addObject("user", user.getUserName());
         }
         return mv;
 
@@ -95,6 +92,7 @@ public class UserController {
 
     @RequestMapping("/registration")
     public ModelAndView registration(@Valid User user){
+        log.info("Parametro: "+user.getUserName());
         ModelAndView mv = new ModelAndView();
         User newUser = new User();
 

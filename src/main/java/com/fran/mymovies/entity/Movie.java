@@ -5,6 +5,7 @@ import lombok.*;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -39,4 +40,7 @@ public class Movie implements Serializable {
         joinColumns = {@JoinColumn(name = "movie_id")},
             inverseJoinColumns = {@JoinColumn(name = "genre_id")})
     private Set<MovieGenre> genres = new HashSet<>();
+
+    @Transient
+    private Set<ListType> listType = new HashSet<>();
 }

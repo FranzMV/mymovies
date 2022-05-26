@@ -2,6 +2,7 @@ package com.fran.mymovies.entity;
 
 import lombok.*;
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Set;
 
 /**
@@ -14,7 +15,7 @@ import java.util.Set;
 @ToString
 @Entity
 @Table(name = "tv_series")
-public class TvSerie {
+public class TvSerie implements Serializable {
 
     @Id
     private Long id;

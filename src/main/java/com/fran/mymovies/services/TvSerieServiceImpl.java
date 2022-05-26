@@ -33,8 +33,9 @@ public class TvSerieServiceImpl implements ITvSerieService{
     }
 
     @Override
+    @Transactional(readOnly = true)
     public TvSerie findById(Long id) {
-        return tvSeriesDAO.findById(id).orElse(null);
+        return tvSeriesDAO.findById(id).get();
     }
 
     @Override

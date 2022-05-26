@@ -3,6 +3,7 @@ package com.fran.mymovies.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -17,7 +18,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Entity
 @Table(name = "genres_of_movies")
-public class MovieGenre {
+public class MovieGenre implements Serializable {
 
     @Id
     private Long id;

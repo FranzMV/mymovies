@@ -11,6 +11,7 @@ import java.util.List;
 public interface IMovieService {
 
     List<Movie> findAll();
+
     Movie findById(Long id);
 
     Page<Movie> findPage(int pageNumber);

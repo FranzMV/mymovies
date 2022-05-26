@@ -3,6 +3,7 @@ package com.fran.mymovies.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Set;
 
 /**
@@ -17,7 +18,7 @@ import java.util.Set;
 @ToString
 @Entity
 @Table(name = "genres_of_tv_series")
-public class TvSerieGenre {
+public class TvSerieGenre implements Serializable {
     @Id
     private Long id;
     private String name;
