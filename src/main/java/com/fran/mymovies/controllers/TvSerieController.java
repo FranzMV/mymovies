@@ -11,6 +11,7 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,12 +19,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 /**
  * @author Francisco David Manzanedo.
  * */
 
 @Getter
-@Setter
 @NoArgsConstructor
 @Slf4j
 @Controller
@@ -69,26 +72,45 @@ public class TvSerieController {
         model.addAttribute("totalPages", page.getTotalPages());
         model.addAttribute("totalItems", page.getTotalElements());
         model.addAttribute("tvseries", page.getContent());
+        model.addAttribute("tvGenres",tvSeriesGenresService.findAll());
         model.addAttribute("user", actualUser.getUserName());
+        return "series/tvseries-list";
+    }
+
+
+
+    @GetMapping("filter/{id}")
+    public String filterByGenre(Model model, @PathVariable("id") Long id){
+        log.info("Entra con id:"+id);
+        List<TvSerie> filterTvSeriesByGenre = tvSerieService.findAll()
+                .stream()
+                .filter(tvSerie-> tvSerie.getGenres()
+                        .stream()
+                        .anyMatch(genre-> genre.getId().equals(id)))
+                .collect(Collectors.toList());
+
+        Page<TvSerie> filterGenrePage = new PageImpl<>(filterTvSeriesByGenre);
+
+        model.addAttribute("tvSeriesGenres", tvSerieService.findAll());
+        model.addAttribute("title", "TvSeries");
+        model.addAttribute("urlImage", URL_IMAGE);
+        model.addAttribute("totalPages", filterGenrePage.getTotalPages());
+        model.addAttribute("totalItems", filterGenrePage.getTotalElements());
+        model.addAttribute("user", actualUser.getUserName());
+        model.addAttribute("tvseries",filterGenrePage.getContent());
         return "series/tvseries-list";
     }
 
     @GetMapping("/detail/{id}")
     public ModelAndView tvSerieDetail(@PathVariable("id") Long id){
         TvSerie selectedTvSerie = tvSerieService.findById(id);
-        if(selectedTvSerie== null){
-            log.info("Entra null");
-            return new ModelAndView(" /tvseries/");
-        }
         ModelAndView mv = new ModelAndView("series/tvserie-detail");
         mv.addObject("selectedTvSerie", selectedTvSerie);
         mv.addObject("title", selectedTvSerie.getTitle());
         mv.addObject("urlImage", URL_ORIGINAL_IMAGE);
         mv.addObject("listTypes", actualUser.getListTypes());
         mv.addObject("user", actualUser);
-       // mv.addObject("currentPage", page.getNumber());
         log.info(selectedTvSerie.getPoster_path());
-        //log.info(String.valueOf(page.getNumber()));
         return mv;
     }
 }

@@ -52,8 +52,11 @@
                             </svg> Géneros
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" th:href="@{/tvseries/all}">Limpiar filtro</a></li>
+                            <li><hr class="dropdown-divider"></li>
                             <li th:each="g: ${tvGenres}">
-                                <a class="dropdown-item" th:value="${g.id}"  th:field="${g.name}" href="#"
+                                <a class="dropdown-item" th:value="${g.id}"  th:field="${g.name}"
+                                   th:href="@{/tvseries/filter/{id}(id=${g.id})}"
                                    th:text="${g.name}"></a>
                             </li>
                             <li><hr class="dropdown-divider"></li>
@@ -98,12 +101,7 @@
                      th:object="${tvserie}">
                     <div id="card">
                         <a  th:href="@{/tvseries/detail/{id}(id=*{id})}" style="text-decoration: none;color: inherit;">
-                            <div class="card mb-4 shadow p-3 mb-5 bg-body rounded">
-                                <div th:if="${tvserie.backdrop_path} == ''">
-                                    <img class="card-img-top"
-                                     th:src="|${urlImage}${tvserie.poster_path}|"
-                                     alt="Imagen no disponible">
-                                </div>
+                            <div class="card mb-4 shadow p-3 mb-5 bg-body rounded" style="width: 25rem; height:30rem">
                                 <img class="card-img-top"
                                      th:src="|${urlImage}${tvserie.backdrop_path}|"
                                      alt="Imagen no disponible">

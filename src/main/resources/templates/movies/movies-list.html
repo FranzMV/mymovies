@@ -54,8 +54,11 @@
                             </svg> Géneros
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" th:href="@{/movies/all}">Limpiar filtro</a></li>
+                            <li><hr class="dropdown-divider"></li>
                             <li th:each="g: ${moviesGenres}">
-                                <a class="dropdown-item" th:value="${g.id}"  th:field="${g.name}" href="#"
+                                <a class="dropdown-item" th:value="${g.id}"  th:field="${g.name}"
+                                   th:href="@{/movies/filter/{id}(id=${g.id})}"
                                    th:text="${g.name}"></a>
                             </li>
                             <li><hr class="dropdown-divider"></li>
@@ -101,7 +104,7 @@
                 <div class="col-md-4" th:each="movie: ${movies}" th:object="${movie}">
                     <div id="card">
                         <a  th:href="@{/movies/detail/{id}(id=*{id})}" style="text-decoration: none;color: inherit;">
-                            <div class="card mb-4 shadow p-3 mb-5 bg-body rounded">
+                            <div class="card mb-4 shadow p-3 mb-5 bg-body rounded" style="width: 25rem; height:30rem">
                                 <div th:if="|${urlImage}${movie.backdrop_path}| != ''">
                                     <img class="card-img-top" th:src="|${urlImage}${movie.backdrop_path}|"
                                          alt="Imagen no disponible">
@@ -135,16 +138,20 @@
                         <nav aria-label="Pagination" class="hidden-xs">
                             <ul class="pagination justify-content-center">
                                 <li class="page-item"
-                                    th:classappend="@{prevPage == 0 ? 'disabled' : ''}">
-                                    <a class="page-link text-secondary" th:href="@{'/movies/page/' + ${prevPage}}" th:text="Anterior"></a>
+                                    th:classappend="@{currentPage == 1 ? 'disabled' : ''}">
+                                    <a  class="page-link text-secondary" th:href="@{'/movies/page/' + ${prevPage}}"
+                                    >Anterior
+                                    </a>
                                 </li>
                                 <li class="page-item"
                                     th:each="i: ${#numbers.sequence(totalItems + 1, totalPages > 10 + totalItems ? totalItems + 10 : totalPages, 1 )}"
                                     th:classappend="${currentPage == i ? 'active' : ''} ">
                                     <a class="page-link" th:href="@{'/movies/page/' + ${i}}" th:text="${i}"></a>
                                 </li>
-                                <li class="page-item" th:classappend="@{current == totalPages ? 'disabled' : ''}">
-                                    <a class="page-link text-secondary" th:href="@{'/movies/page/' + ${nextPage}}" th:text="Siguiente">
+                                <li class="page-item"
+                                    th:classappend="@{current == totalPages ? 'disabled' : ''}">
+                                    <a class="page-link text-secondary" th:href="@{'/movies/page/' + ${nextPage}}"
+                                       th:text="Siguiente">Siguiente
                                     </a>
                                 </li>
                             </ul>

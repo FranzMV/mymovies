@@ -16,7 +16,6 @@ import java.util.Set;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
 @Entity
 @Table(name = "movies")
 public class Movie implements Serializable {
