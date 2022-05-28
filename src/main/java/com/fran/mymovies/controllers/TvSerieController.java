@@ -1,13 +1,14 @@
 package com.fran.mymovies.controllers;
 
+import com.fran.mymovies.entity.Movie;
 import com.fran.mymovies.entity.TvSerie;
 import com.fran.mymovies.entity.User;
+import com.fran.mymovies.services.IListTypeService;
 import com.fran.mymovies.services.TvSerieServiceImpl;
 import com.fran.mymovies.services.TvSeriesGenresImpl;
 import com.fran.mymovies.services.UserServiceImpl;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -16,9 +17,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -40,10 +43,14 @@ public class TvSerieController {
     private UserServiceImpl userService;
 
     @Autowired
-    private UserController userController;
+    private TvSeriesGenresImpl tvSeriesGenresService;
 
     @Autowired
-    private TvSeriesGenresImpl tvSeriesGenresService;
+    private IListTypeService listTypeService;
+
+    @Autowired
+    private UserController userController;
+
 
     private User actualUser;
 
@@ -53,7 +60,7 @@ public class TvSerieController {
 
 
     @GetMapping("/all")
-    public String getAllMovies(Model model) {
+    public String getAllSeries(Model model) {
         actualUser = userController.getActualUser();
         model.addAttribute("user", actualUser.getUserName());
         model.addAttribute("tvGenres",tvSeriesGenresService.findAll());
@@ -104,13 +111,20 @@ public class TvSerieController {
     @GetMapping("/detail/{id}")
     public ModelAndView tvSerieDetail(@PathVariable("id") Long id){
         TvSerie selectedTvSerie = tvSerieService.findById(id);
+        selectedTvSerie.getListType().addAll(listTypeService.findAll());
         ModelAndView mv = new ModelAndView("series/tvserie-detail");
         mv.addObject("selectedTvSerie", selectedTvSerie);
         mv.addObject("title", selectedTvSerie.getTitle());
         mv.addObject("urlImage", URL_ORIGINAL_IMAGE);
-        mv.addObject("listTypes", actualUser.getListTypes());
         mv.addObject("user", actualUser);
-        log.info(selectedTvSerie.getPoster_path());
+        return mv;
+    }
+
+    @PostMapping("/addSerie")
+    public ModelAndView addMovieToList(@Valid Movie selectedMovie){
+        ModelAndView mv = new ModelAndView("redirect:/tvseries/all");
+        log.info("Entra a añandir-------------------------");
+        selectedMovie.getListType().forEach(l-> log.info(l.getListTypeName().name()));
         return mv;
     }
 }

@@ -1,4 +1,5 @@
 package com.fran.mymovies.controllers;
+import com.fran.mymovies.entity.ListType;
 import com.fran.mymovies.entity.Movie;
 import com.fran.mymovies.entity.User;
 import com.fran.mymovies.services.IListTypeService;
@@ -7,7 +8,6 @@ import com.fran.mymovies.services.MovieServiceImpl;
 import com.fran.mymovies.services.UserServiceImpl;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -67,6 +67,7 @@ public class MovieViewController {
         model.addAttribute("user", actualUser.getUserName());
         model.addAttribute("movies",movieService.findAll());
         model.addAttribute("moviesGenres", movieGenresService.findAll());
+        Page<Movie> page = movieService.findPage(1);
         return getOnePage(model, 1);
     }
 
@@ -76,16 +77,16 @@ public class MovieViewController {
     public String getOnePage(Model model, @PathVariable("pageNumber") int currentPage){
         log.info("Current Page:"+currentPage );
         Page<Movie> page = movieService.findPage(currentPage);
-        model.addAttribute("title", "Movies");
-        model.addAttribute("urlImage", URL_IMAGE);
-        model.addAttribute("currentPage", currentPage);
-        model.addAttribute("nextPage", currentPage +1);
-        model.addAttribute("prevPage", currentPage -1);
-        model.addAttribute("totalPages", page.getTotalPages());
-        model.addAttribute("totalItems", page.getTotalElements());
-        model.addAttribute("movies", page.getContent());
-        model.addAttribute("user", actualUser.getUserName());
-        return "movies/movies-list";
+            model.addAttribute("title", "Movies");
+            model.addAttribute("urlImage", URL_IMAGE);
+            model.addAttribute("currentPage", currentPage);
+            model.addAttribute("nextPage", currentPage + 1);
+            model.addAttribute("prevPage", currentPage - 1);
+            model.addAttribute("totalPages", page.getTotalPages());
+            model.addAttribute("totalItems", page.getTotalElements());
+            model.addAttribute("movies", page.getContent());
+            model.addAttribute("user", actualUser.getUserName());
+            return "movies/movies-list";
     }
 
     @GetMapping("filter/{id}")
@@ -105,11 +106,13 @@ public class MovieViewController {
         model.addAttribute("totalItems", filterGenrePage.getTotalElements());
         model.addAttribute("user", actualUser.getUserName());
         model.addAttribute("movies",filterGenrePage.getContent());
-        return "movies/movies-list";
+        return "movies-movie-genre";
     }
 
+
+
     @GetMapping("/detail/{id}")
-    public ModelAndView movieDetail(@PathVariable("id") Long id){
+    public ModelAndView movieDetail(@PathVariable("id") Long id, Model model){
         Movie selectedMovie = movieService.findById(id);
         selectedMovie.getListType().addAll((listTypeService.findAll()));
         id_selectedMovie = id;
@@ -122,32 +125,90 @@ public class MovieViewController {
     }
 
 
-    @RequestMapping("/addMovie")
-    public ModelAndView addMovieToList(@Valid Movie selectedMovie){
+    @PostMapping("/addMovie")
+    public ModelAndView addMovieToList(@Valid Movie selectedMovie, Model model){
         final Movie selectedMovieAux = movieService.findById(id_selectedMovie);
         final User userAux = userService.getById(actualUser.getId()).get();
-        log.info("Usuario al que se a;ade: "+userAux);
-        log.info(selectedMovieAux.getTitle());
-        selectedMovie.getListType().forEach(l-> {
-            if(l.getId().equals(1L)){
-                log.info("Seleccionado favorita");
-                userAux.getFavorite_movies().add(selectedMovieAux);
-            }else if(l.getId().equals(2L)){
-                log.info("Seleccionado pendiente");
-                userAux.getPending_movies().add(selectedMovieAux);
-            }else {
-                log.info("Seleccionado vista");
-                userAux.getWatched_movies().add(selectedMovieAux);
-            }
-            userAux.getFavorite_movies().forEach(m-> log.info("Añadida "+m.getTitle()));
-            userService.save(userAux);
-        });
 
-        if(id_selectedMovie == null){
-            return new ModelAndView("redirect:/movies/all");
+        for (ListType l: selectedMovie.getListType()) {
+            switch (l.getListTypeName().name()){
+                case "FAVORITA":
+                    if (!movieExistsFavoriteList(selectedMovieAux, userAux)) {
+                        userAux.getFavorite_movies().add(selectedMovieAux);
+                        model.addAttribute("result", "Película "
+                                .concat(selectedMovieAux.getTitle()).concat(" añadida a la lista de Favoritos"));
+                        //SI la marca como favorita y no existe en vista, se añade a vista.
+                        if(!movieExistsWatchedList(selectedMovieAux, userAux)){
+                            userAux.getWatched_movies().add(selectedMovie);
+                        }
+                    }else
+                        model.addAttribute("error", "La película seleccionada ya ha existe en esta lista.");
+                    break;
+
+                case "PENDIENTE":
+                    log.info("Seleccionado Pendiente");
+                    if(!movieExistsPendingList(selectedMovieAux, userAux)){
+                        if(movieExistsWatchedList(selectedMovieAux, userAux))
+                            userAux.getPending_movies().add(selectedMovieAux);
+                        else
+                            model.addAttribute("error", "La película seleccionada aparece es la lista de VISTAS");
+                    }else
+                        model.addAttribute("error", "La película seleccionada ya ha existe en esta lista.");
+                    break;
+
+                case "VISTA":
+                    if(movieExistsWatchedList(selectedMovieAux, userAux)){
+                        userAux.getWatched_movies().add(selectedMovieAux);
+                        //Si la marca como vista y existe en pendiente, la elimina de pendiente
+                        if(movieExistsPendingList(selectedMovieAux, userAux))
+                            userAux.getWatched_movies().remove(selectedMovieAux);
+
+                        model.addAttribute("result", "Película "
+                                .concat(selectedMovieAux.getTitle())
+                                .concat(" añadida a la lista de Favoritos"));
+                    }else
+                        model.addAttribute("error", "La película seleccionada ya ha existe en esta lista.");
+                    break;
+
+                default:
+                    model.addAttribute("error", "Selecciona la lista a la que desea añadir la película.");
+                    break;
+            }
         }
-        ModelAndView mv = new ModelAndView("redirect:/movies/all");
-        id_selectedMovie = 0L;
-        return mv;
+        //id_selectedMovie = 0L;
+        return movieDetail(selectedMovieAux.getId(), model);
+    }
+
+    private static boolean movieExistsPendingList(Movie selectedMovie, User actualUser){
+        boolean result = false;
+        for(Movie m : actualUser.getPending_movies()){
+            if (m.getId().equals(selectedMovie.getId())) {
+                result = true;
+                break;
+            }
+        }
+        return result;
+    }
+
+    private static boolean movieExistsFavoriteList(Movie selectedMovie, User actualUser){
+        boolean result = false;
+        for(Movie m : actualUser.getFavorite_movies()){
+            if (m.getId().equals(selectedMovie.getId())) {
+                result = true;
+                break;
+            }
+        }
+        return result;
+    }
+
+    private static boolean movieExistsWatchedList(Movie selectedMovie, User actualUser){
+        boolean result = false;
+        for(Movie m : actualUser.getWatched_movies()){
+            if (m.getId().equals(selectedMovie.getId())) {
+                result = true;
+                break;
+            }
+        }
+        return !result;
     }
 }

@@ -3,6 +3,7 @@ package com.fran.mymovies.entity;
 import lombok.*;
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -35,4 +36,7 @@ public class TvSerie implements Serializable {
             joinColumns = {@JoinColumn(name = "tv_series_id")},
             inverseJoinColumns = {@JoinColumn(name = "genre_id")})
     private Set<TvSerieGenre> genres;
+
+    @Transient
+    private Set<ListType> listType = new HashSet<>();
 }

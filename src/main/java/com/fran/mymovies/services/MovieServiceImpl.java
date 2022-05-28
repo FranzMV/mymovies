@@ -50,10 +50,4 @@ public class MovieServiceImpl implements IMovieService{
 
 
 
-    @Override
-    @Transactional(readOnly = true)
-    public Page<Movie> findPageFilterByGenre(int pageNumber, Long id) {
-        Pageable pageable = PageRequest.of(pageNumber -1, 12);
-        return movieDAO.findAll(pageable);
-    }
 }

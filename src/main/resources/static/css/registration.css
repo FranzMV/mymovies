@@ -2,7 +2,8 @@
 
 .gradient-custom-3 {
 /* fallback for old browsers */
-background: #84fab0;
+background:
+#88C0D0;
 
 /* Chrome 10-25, Safari 5.1-6 */
 background: -webkit-linear-gradient(to right, rgba(132, 250, 176, 0.5), rgba(143, 211, 244, 0.5));
@@ -12,7 +13,7 @@ background: linear-gradient(to right, rgba(132, 250, 176, 0.5), rgba(143, 211, 2
 }
 .gradient-custom-4 {
 /* fallback for old browsers */
-background: #84fab0;
+background:#81A1C1;
 
 /* Chrome 10-25, Safari 5.1-6 */
 background: -webkit-linear-gradient(to right, rgba(132, 250, 176, 1), rgba(143, 211, 244, 1));
@@ -28,9 +29,13 @@ background: linear-gradient(to right, rgba(132, 250, 176, 1), rgba(143, 211, 244
     linear-gradient(to bottom, rgba(0, 0, 0, 1) 20%, rgba(100, 51, 51, 0.6) 86%, rgba(51, 51, 51, 0.8) 100%),
     /*bottom image*/
     url(https://s3.amazonaws.com/static.rogerebert.com/uploads/blog_post/primary_image/features/the-best-films-of-the-2010s/Header2.jpg);
-    height: 980px;
     color: black;
     background-size: cover;
-
 }
 
+
+.button-effect:hover{
+background-color:#88C0D0;
+  box-shadow: 2px 2px 2px 2px #e9ecef;
+  transform: scale(1.05);
+}

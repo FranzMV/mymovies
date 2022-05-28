@@ -57,7 +57,6 @@ public class MovieRestController {
 
     private static MovieDTO getMovieDTO(Movie movie){
         MovieDTO movieDTO = new MovieDTO();
-        Map<Long, String> moviesGenres = new HashMap<>();
         movieDTO.setId(movie.getId());
         movieDTO.setOriginal_language(movie.getOriginal_language());
         movieDTO.setOriginal_title(movie.getOriginal_title());
@@ -70,8 +69,7 @@ public class MovieRestController {
         movieDTO.setVideo(movie.getVideo());
         movieDTO.setVote_average(movie.getVote_average());
         movieDTO.setVote_count(movie.getVote_count());
-        movie.getGenres().forEach(g-> moviesGenres.put(g.getId(), g.getName()));
-        movieDTO.setGenres(moviesGenres);
+        movie.getGenres().forEach(g-> movieDTO.getGenres().put(g.getId(), g.getName()));
         return movieDTO;
 
     }

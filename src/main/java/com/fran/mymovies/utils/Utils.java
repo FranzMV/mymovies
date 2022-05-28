@@ -1,6 +1,5 @@
 package com.fran.mymovies.utils;
 
-
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import java.math.BigInteger;
@@ -9,7 +8,6 @@ import java.security.NoSuchAlgorithmException;
 @Getter
 @NoArgsConstructor
 public class Utils {
-
 
     public static String getMd5(String input)
     {
@@ -32,11 +30,9 @@ public class Utils {
             }
             return hashtext.toString();
         }
-
         // For specifying wrong message digest algorithms
         catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
         }
     }
-
 }

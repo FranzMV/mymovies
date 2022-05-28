@@ -1,18 +1,18 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <title th:text="${title}"></title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <!--<link rel="stylesheet" type="text/css" th:href="@{}">-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/registration.css}">
 </head>
 <body>
 <div class="row d-flex justify-content-center align-items-center">
     <div class="card shadow-lg p-3 mb-5 mt-5 bg-body rounded" style="border-radius: 15px; width: 65rem; height:50rem">
-        <form th:action="@{/movies/addMovie/}" th:object="${selectedMovie}" method="post" >
         <div class="clearfix">
             <a class="nav-link" th:href="@{/movies/all}">
-                <button class="btn btn-secondary mt-1 md-2 float-end" data-bs-toggle="tooltip"
+                <button class="btn btn-outline-secondary mt-1 md-2 float-end" data-bs-toggle="tooltip"
                         data-bs-placement="top" title="Volver" style="float:right;">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                          class="bi bi-arrow-left-circle" viewBox="0 0 16 16">
@@ -22,81 +22,93 @@
                 </button>
             </a>
         </div>
-        <div class="row g-0">
-            <div class="col-sm-5">
-                <img class="card-img-top h-100 rounded" th:src="|${urlImage}${selectedMovie.poster_path}|"
-                     alt="Imagen no disponible">
-            </div>
-            <div class="col-sm-7">
-                <div class="card-body">
-                    <h5 class="card-title" th:text="${title}"></h5>
-                    <p class="card-text" th:text="*{overview}"></p>
-                    <div class="d-flex justify-content-between align-items-center">
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item disabled" th:field="*{original_language}"
-                                th:text="'Idioma original: '+ *{original_language}">
-                            </li>
-                            <li class="list-group-item disabled" th:field="*{original_title}"
-                                th:text="'Título original: '+ *{original_title}">
-                            </li>
-                            <li class="list-group-item disabled"
-                                th:field="*{release_date}"
-                                th:with="testString= *{release_date}"
-                                th:text="'Año de estreno: '+ ${testString.replaceFirst('-.*', '')}">
-                            </li>
-                            <li class="list-group-item disabled" th:field="*{genres}">
-                                <span th:each="a, g : *{genres}"
-                                      th:text="${!g.last} ? ${a.name} + ',': ${a.name}"></span>&nbsp;
-                            </li>
-                            <li class="list-group-item disabled" th:field="*{vote_count}">
-                                <span class="text-secondary">Número de votos: </span>
-                                <span class="badge circle circle-md text-white mr-2"
-                                      style="background:linear-gradient(90deg, rgba(255, 193, 7, 1) 0%, rgba(63, 81, 181, 1) 100%);"
-                                      th:text="*{vote_count}"></span>
-                            </li>
-                            <li class="list-group-item disabled" th:field="*{vote_average}">
-                                <span class="text-secondary">Puntuación:</span>
-                                <span class="badge circle circle-md text-white mr-2"
-                                      style="background:linear-gradient(90deg, rgba(255, 235, 59, 1) 0%, rgba(233, 30, 99, 1) 100%);"
-                                      th:text="*{vote_average}"></span>
-                            </li>
-                            <li class="list-group-item disabled" th:field="*{popularity}">
-                                <span class="text-secondary">Popularidad: </span>
-                                <span th:with="result=*{popularity % 1000}">
-                           <span class="badge circle circle-md text-white mr-2"
-                                 style=" background:linear-gradient(90deg, rgba(233, 30, 99, 1) 0%, rgba(0, 188, 212, 1) 100%);"
-                                 th:text="${result} == 0 ? ${result} : ${#numbers.formatDecimal(result, 0,2)} + '%'">W
-                           </span>
-                        </span>
-                            </li>
-                        </ul>
+        <form th:action="@{/movies/addMovie/}" th:object="${selectedMovie}" method="post">
+            <div class="row g-0">
+                <div class="col-sm-5">
+                    <img class="card-img-top h-100 rounded" th:src="|${urlImage}${selectedMovie.poster_path}|"
+                         alt="Imagen no disponible">
+                </div>
+                <div class="col-sm-7">
+                    <div class="card-body">
+
+                        <h5 class="card-title" th:text="${title}"></h5>
+                        <p class="card-text" th:text="*{overview}"></p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item disabled" th:field="*{original_language}"
+                                    th:text="'Idioma original: '+ *{original_language}">
+                                </li>
+                                <li class="list-group-item disabled" th:field="*{original_title}"
+                                    th:text="'Título original: '+ *{original_title}">
+                                </li>
+                                <li class="list-group-item disabled"
+                                    th:field="*{release_date}"
+                                    th:with="testString= *{release_date}"
+                                    th:text="'Año de estreno: '+ ${testString.replaceFirst('-.*', '')}">
+                                </li>
+                                <li class="list-group-item disabled" th:field="*{genres}">
+                                    <span th:each="a, g : *{genres}"
+                                          th:text="${!g.last} ? ${a.name} + ',': ${a.name}"></span>&nbsp;
+                                </li>
+                                <li class="list-group-item disabled" th:field="*{vote_count}">
+                                    <span class="text-secondary">Número de votos: </span>
+                                    <span class="badge circle circle-md text-white mr-2"
+                                          style="background:linear-gradient(90deg, rgba(255, 193, 7, 1) 0%, rgba(63, 81, 181, 1) 100%);"
+                                          th:text="*{vote_count}"></span>
+                                </li>
+                                <li class="list-group-item disabled" th:field="*{vote_average}">
+                                    <span class="text-secondary">Puntuación:</span>
+                                    <span class="badge circle circle-md text-white mr-2"
+                                          style="background:linear-gradient(90deg, rgba(255, 235, 59, 1) 0%, rgba(233, 30, 99, 1) 100%);"
+                                          th:text="*{vote_average}"></span>
+                                </li>
+                                <li class="list-group-item disabled" th:field="*{popularity}">
+                                    <span class="text-secondary">Popularidad: </span>
+                                    <span th:with="result=*{popularity % 1000}">
+                                       <span class="badge circle circle-md text-white mr-2"
+                                             style=" background:linear-gradient(90deg, rgba(233, 30, 99, 1) 0%, rgba(0, 188, 212, 1) 100%);"
+                                             th:text="${result} == 0 ? ${result} : ${#numbers.formatDecimal(result, 0,2)} + '%'">
+                                       </span>
+                                    </span>
+                                </li>
+
+                                <li class="list-group-item enabled">
+                                    <span class="text-secondary mt-5">Añadir a la lista: </span>
+                                    <select class="form-select mt-1" aria-label=".form-select-sm" th:field="*{listType}">
+                                        <option th:each="l: ${selectedMovie.listType}" th:value="${l.id}" th:text="${l.getListTypeName().name()}">
+                                        </option>
+                                    </select>
+                                </li>
+
+                            </ul>
+                        </div>
                     </div>
-                    <select class="form-select form-select-lg mt-3" aria-label=".form-select-lg"
-                            th:field="*{listType}">
-                        <option th:each="l: ${selectedMovie.listType}" th:value="${l.id}"
-                                th:text="${l.getListTypeName().name()}">
-                        </option>
-                    </select>
+                </div>
+                <div class="clearfix">
+                    <button class="btn btn-sm mt-1 md-2 float-end text-white" th:action="submit"
+                            style="float:right; width:100px; height:50px; background-color:#88C0D0;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                             class="bi bi-plus-circle" viewBox="0 0 16 16">
+                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                            <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+                        </svg>
+                        Añadir
+                    </button>
                 </div>
             </div>
-
-        </div>
-            <div class="clearfix">
-                <button class="btn btn btn-success mt-1 md-2 float-end"
-                        th:action="submit"
-                        style="float:right; width:100px; height:50px">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                         class="bi bi-arrow-left-circle" viewBox="0 0 16 16">
-                        <path fill-rule="evenodd"
-                              d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z"/>
-                    </svg>
-                    Añadir
-                </button>
-            </div>
         </form>
+        <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert"
+             style="height:70px;">
+            <strong>UPSS!</strong> <p th:text="${error}"></p>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <div th:if="${result}" class="alert alert-success alert-dismissible fade show" role="alert"
+             style="height:60px;">
+            <p th:text="${result}"></p>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
     </div>
 </div>
 <div th:insert="fragments :: scripts"></div>
 </body>
-
 </html>

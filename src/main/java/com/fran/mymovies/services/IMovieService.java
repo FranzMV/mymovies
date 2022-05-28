@@ -22,7 +22,4 @@ public interface IMovieService  {
     Page<Movie> findPage(int pageNumber);
 
 
-    @Transactional(readOnly = true)
-    Page<Movie> findPageFilterByGenre(int pageNumber, Long id);
-
 }
