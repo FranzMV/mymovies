@@ -45,4 +45,7 @@ public class UserServiceImpl {
         return userService.existsByUserName(userName);
     }
 
+    public void deleteById(Long id){
+        userService.deleteById(id);
+    }
 }

@@ -7,17 +7,18 @@
     <link rel="stylesheet" type="text/css" th:href="@{/css/registration.css}">
 </head>
 <body>
-    <section id="contenido">
+    <div id="contenido">
         <div class="container h-100">
             <div class="row d-flex justify-content-center align-items-center h-100">
-                <div class="col-12 col-md-5 col-lg-7 col-xl-7" style="width:410px;" th:object="${user}">
-                    <div class="card" style="border-radius: 15px;" >
+                <div class="col-12 col-md-5 col-lg-7 col-xl-7" style="width:410px; height:900px;" th:object="${user}">
+                    <div class="card position-absolute top-50 start-50 translate-middle"
+                         style="border-radius: 15px; width:400px;" >
                         <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
-                            <strong>UPSS!</strong> <p th:text="${error}"></p>
+                            <p th:text="'!UPSS! '+${error}"></p>
                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
                         <div th:if="${okRegister}" class="alert alert-success alert-dismissible fade show" role="alert">
-                            <strong>!Bienvenido!</strong> <p th:text="*{userName}"></p>
+                            <p th:text="'!Bienvenido! ' + *{userName}"></p>
                             <p th:text="${okRegister}"></p>
                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
@@ -53,7 +54,7 @@
                             </form>
 <!--                            <p class="d-flex justify-content-center mt-2">Ya has iniciado sesión</p>-->
                         </div>
-                        <p class="text-center text-muted">¿No tiene una cuenta?
+                        <p class="text-center text-muted">¿Crear cuenta?
                             <a th:href="@{/user/register}" class="card-link my-5">
                                 <u>Registrarse aquí</u>
                             </a>
@@ -62,7 +63,7 @@
                 </div>
             </div>
         </div>
-    </section>
+    </div>
     <footer th:insert="fragments :: footer"> </footer>
     <div th:insert="fragments :: scripts"> </div>
 </body>

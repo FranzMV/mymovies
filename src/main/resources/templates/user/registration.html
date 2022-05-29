@@ -10,10 +10,11 @@
 <div id="contenido">
     <div class="container h-100">
         <div class="row d-flex justify-content-center align-items-center h-100">
-            <div class="col-12 col-md-9 col-lg-7 col-xl-6" style="width:410px;">
-                <div class="card border-dark mb-3" style="border-radius: 15px; height:600px;">
-                    <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
-                        <strong>UPSSS!</strong> <p th:text="${error}"></p>
+            <div class="col-12 col-md-9 col-lg-7 col-xl-6" style="width:410px; height:900px;">
+                <div class="card border-dark position-absolute top-50 start-50 translate-middle"
+                     style="border-radius: 15px; width:400px;">
+                    <div th:if="${error}" class="alert alert-danger alert-dismissible fade show " role="alert">
+                         <p th:text="'!UPSS!' + ${error}"></p>
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
                     <div class="card-body p-5 ">

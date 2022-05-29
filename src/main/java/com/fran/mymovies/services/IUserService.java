@@ -10,4 +10,6 @@ public interface IUserService extends UserDAO {
     Optional<User> findByUserName(String username);
     boolean existsByUserName(String username);
 
+    void deleteById (Long id);
+
 }

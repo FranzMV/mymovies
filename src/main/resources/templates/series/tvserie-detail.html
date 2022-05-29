@@ -95,6 +95,16 @@
                 </button>
             </div>
         </form>
+        <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert"
+             style="height:70px;">
+            <strong>UPSS!</strong> <p th:text="${error}"></p>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <div th:if="${result}" class="alert alert-success alert-dismissible fade show" role="alert"
+             style="height:60px;">
+            <p th:text="${result}"></p>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
     </div>
 
 

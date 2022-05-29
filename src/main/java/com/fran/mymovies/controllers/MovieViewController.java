@@ -6,10 +6,12 @@ import com.fran.mymovies.services.IListTypeService;
 import com.fran.mymovies.services.MovieGenreImpl;
 import com.fran.mymovies.services.MovieServiceImpl;
 import com.fran.mymovies.services.UserServiceImpl;
+import com.fran.mymovies.utils.Constants;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnSingleCandidate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Controller;
@@ -106,7 +108,7 @@ public class MovieViewController {
         model.addAttribute("totalItems", filterGenrePage.getTotalElements());
         model.addAttribute("user", actualUser.getUserName());
         model.addAttribute("movies",filterGenrePage.getContent());
-        return "movies-movie-genre";
+        return "movies/movies-list";
     }
 
 
@@ -132,50 +134,61 @@ public class MovieViewController {
 
         for (ListType l: selectedMovie.getListType()) {
             switch (l.getListTypeName().name()){
-                case "FAVORITA":
+                //FAVORITA
+                case Constants.TYPE_LIST_FAVORITE:
                     if (!movieExistsFavoriteList(selectedMovieAux, userAux)) {
                         userAux.getFavorite_movies().add(selectedMovieAux);
-                        model.addAttribute("result", "Película "
+                        model.addAttribute(Constants.RESULT_LABEL, "Película "
                                 .concat(selectedMovieAux.getTitle()).concat(" añadida a la lista de Favoritos"));
                         //SI la marca como favorita y no existe en vista, se añade a vista.
-                        if(!movieExistsWatchedList(selectedMovieAux, userAux)){
-                            userAux.getWatched_movies().add(selectedMovie);
+                        if(movieExistsWatchedList(selectedMovieAux, userAux)) {
+                            log.info("Entra en si no esta en " + "vista########################################################");
+                            userAux.getWatched_movies().add(selectedMovieAux);
+                        }
+
+                    }else
+                        model.addAttribute(Constants.ERROR_LABEL, Constants.ERROR_MSG_MOVIE_EXISTS_FAVORITE);
+                    break;
+
+                //PENDIENTE
+                case Constants.TYPE_LIST_PENDING:
+                    if(!movieExistsPendingList(selectedMovieAux, userAux)){
+                        //Si la quiere añadir a PENDIENTE, no debe existir en VISTA
+                        if(movieExistsWatchedList(selectedMovieAux, userAux)) {
+                            userAux.getPending_movies().add(selectedMovieAux);
+                            model.addAttribute(Constants.RESULT_LABEL, "Película "
+                                    .concat(selectedMovieAux.getTitle()).concat(" añadida a la lista de Favoritos"));
+                        }
+                        else
+                            model.addAttribute(Constants.ERROR_LABEL,  Constants.ERROR_MSG_MOVIE_EXISTS_WATCHED);
+                    }else
+                        model.addAttribute(Constants.ERROR_LABEL,  Constants.ERROR_MSG_MOVIE_EXISTS_PENDING);
+                    break;
+
+                //VISTA
+                case Constants.TYPE_LIST_WATCHED:
+                    if(movieExistsWatchedList(selectedMovieAux, userAux)){
+                        //Si la marca como vista y existe en pendiente, la elimina de pendiente
+                        if(movieExistsPendingList(selectedMovieAux, userAux)) {
+                            userAux.getPending_movies().remove(selectedMovieAux);
+                            model.addAttribute(Constants.RESULT_LABEL, "Película ".concat(selectedMovieAux.getTitle())
+                                    .concat(" añadida a la lista de Vistas y eliminada de Pendientes"));
+                        }else {
+                            userAux.getWatched_movies().add(selectedMovieAux);
+                            model.addAttribute(Constants.RESULT_LABEL, "Película ".concat(selectedMovieAux.getTitle())
+                                    .concat(" añadida a la lista de Vistas"));
                         }
                     }else
-                        model.addAttribute("error", "La película seleccionada ya ha existe en esta lista.");
-                    break;
-
-                case "PENDIENTE":
-                    log.info("Seleccionado Pendiente");
-                    if(!movieExistsPendingList(selectedMovieAux, userAux)){
-                        if(movieExistsWatchedList(selectedMovieAux, userAux))
-                            userAux.getPending_movies().add(selectedMovieAux);
-                        else
-                            model.addAttribute("error", "La película seleccionada aparece es la lista de VISTAS");
-                    }else
-                        model.addAttribute("error", "La película seleccionada ya ha existe en esta lista.");
-                    break;
-
-                case "VISTA":
-                    if(movieExistsWatchedList(selectedMovieAux, userAux)){
-                        userAux.getWatched_movies().add(selectedMovieAux);
-                        //Si la marca como vista y existe en pendiente, la elimina de pendiente
-                        if(movieExistsPendingList(selectedMovieAux, userAux))
-                            userAux.getWatched_movies().remove(selectedMovieAux);
-
-                        model.addAttribute("result", "Película "
-                                .concat(selectedMovieAux.getTitle())
-                                .concat(" añadida a la lista de Favoritos"));
-                    }else
-                        model.addAttribute("error", "La película seleccionada ya ha existe en esta lista.");
+                        model.addAttribute(Constants.ERROR_LABEL, Constants.ERROR_MSG_MOVIE_EXISTS_WATCHED);
                     break;
 
                 default:
-                    model.addAttribute("error", "Selecciona la lista a la que desea añadir la película.");
+                    model.addAttribute(Constants.ERROR_LABEL, Constants.NO_LIST_SELECTED_ERROR);
                     break;
             }
         }
         //id_selectedMovie = 0L;
+        userService.save(userAux);
         return movieDetail(selectedMovieAux.getId(), model);
     }
 

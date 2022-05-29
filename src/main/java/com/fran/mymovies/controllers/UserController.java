@@ -7,6 +7,7 @@ import com.fran.mymovies.entity.enums.ListTypeName;
 import com.fran.mymovies.entity.enums.RoleName;
 import com.fran.mymovies.services.IListTypeService;
 import com.fran.mymovies.services.MovieServiceImpl;
+import com.fran.mymovies.utils.Constants;
 import com.fran.mymovies.utils.Utils;
 import jdk.jshell.execution.Util;
 import lombok.AllArgsConstructor;
@@ -28,8 +29,11 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
+/**
+ * @author Francisco David Manzanedo
+ */
+
 @Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Slf4j
@@ -62,21 +66,17 @@ public class UserController {
         ModelAndView mv = new ModelAndView("redirect:/movies/all/");
         Optional<User> userExists = userService.getUserByName(user.getUserName());
         if(userExists.isPresent()){
-            log.info("Nombre de usuario correcto.");
             String passwordEncoded = Utils.getMd5(user.getPassword());
             if(userExists.get().getPassword().equals(passwordEncoded)){
-                log.info("Password Correcto");
                 actualUser = userExists.get();
             }else{
-                log.info("Password incorrecto");
                 mv.setViewName("user/login");
-                mv.addObject("error", "La contraseña no es correcta.");
+                mv.addObject(Constants.ERROR_LABEL, Constants.ERROR_INVALID_PASSWORD);
                 return mv;
             }
         }else{
-            log.info("NO esta registrado en la base de datos");
             mv.setViewName("user/login");
-            mv.addObject("error", "Nombre de usuario o contraseña incorrectos.");
+            mv.addObject(Constants.ERROR_LABEL, Constants.ERROR_PASS_USERNAME_INVALID);
             return mv;
         }
         return mv;
@@ -85,7 +85,6 @@ public class UserController {
 
     @GetMapping("/register")
     public String register(Model model){
-        log.info("Entra register");
         model.addAttribute("user", new User());
         return "user/registration";
     }
@@ -114,7 +113,7 @@ public class UserController {
         Optional<User> optionalUser = userService.getUserByName(user.getUserName());
         if(optionalUser.isPresent()){
             mv.setViewName("user/registration");
-            mv.addObject("error", "El nombre de usuario ya está en uso.");
+            mv.addObject(Constants.ERROR_LABEL, Constants.ERROR_USERNAME_ALREADY_EXISTS);
             return mv;
         }else{
             newUser.setUserName(user.getUserName());
@@ -131,7 +130,7 @@ public class UserController {
 
         mv.setViewName("user/login");
         mv.addObject("user",  newUser);
-        mv.addObject("okRegister", "Por favor, inicie sesión.");
+        mv.addObject(Constants.OK_REGISTER_LABEL, Constants.PLEASE_SIGNIN);
         return mv;
     }
 

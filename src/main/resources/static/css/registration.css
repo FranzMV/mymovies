@@ -31,11 +31,5 @@ background: linear-gradient(to right, rgba(132, 250, 176, 1), rgba(143, 211, 244
     url(https://s3.amazonaws.com/static.rogerebert.com/uploads/blog_post/primary_image/features/the-best-films-of-the-2010s/Header2.jpg);
     color: black;
     background-size: cover;
-}
-
-
-.button-effect:hover{
-background-color:#88C0D0;
-  box-shadow: 2px 2px 2px 2px #e9ecef;
-  transform: scale(1.05);
+    height: 980px;
 }
