@@ -11,7 +11,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnSingleCandidate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Controller;
@@ -142,7 +141,6 @@ public class MovieViewController {
                                 .concat(selectedMovieAux.getTitle()).concat(" añadida a la lista de Favoritos"));
                         //SI la marca como favorita y no existe en vista, se añade a vista.
                         if(movieExistsWatchedList(selectedMovieAux, userAux)) {
-                            log.info("Entra en si no esta en " + "vista########################################################");
                             userAux.getWatched_movies().add(selectedMovieAux);
                         }
 
@@ -169,14 +167,14 @@ public class MovieViewController {
                 case Constants.TYPE_LIST_WATCHED:
                     if(movieExistsWatchedList(selectedMovieAux, userAux)){
                         //Si la marca como vista y existe en pendiente, la elimina de pendiente
+                        userAux.getWatched_movies().add(selectedMovieAux);
+                        model.addAttribute(Constants.RESULT_LABEL, "Película ".concat(selectedMovieAux.getTitle())
+                                .concat(" añadida a la lista de Vistas"));
+
                         if(movieExistsPendingList(selectedMovieAux, userAux)) {
                             userAux.getPending_movies().remove(selectedMovieAux);
                             model.addAttribute(Constants.RESULT_LABEL, "Película ".concat(selectedMovieAux.getTitle())
                                     .concat(" añadida a la lista de Vistas y eliminada de Pendientes"));
-                        }else {
-                            userAux.getWatched_movies().add(selectedMovieAux);
-                            model.addAttribute(Constants.RESULT_LABEL, "Película ".concat(selectedMovieAux.getTitle())
-                                    .concat(" añadida a la lista de Vistas"));
                         }
                     }else
                         model.addAttribute(Constants.ERROR_LABEL, Constants.ERROR_MSG_MOVIE_EXISTS_WATCHED);

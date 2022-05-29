@@ -60,13 +60,10 @@ public class UserRestController {
 
     @PutMapping("/people/{id}")
     public ResponseEntity<?> update(@Valid @RequestBody User user, BindingResult result, @PathVariable Long id){
-
         User actualUser = userService.getById(id).get();
-
         Map<String, Object> response= new HashMap<>();
 
         if(result.hasErrors()) {
-
             List<String> errors = result.getFieldErrors()
                     .stream()
                     .map(err -> "El campo '" + err.getField() +"' "+ err.getDefaultMessage())
@@ -75,7 +72,6 @@ public class UserRestController {
             response.put("errors", errors);
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         }
-
         if(actualUser == null) {
             response.put("mensaje", "Error: no se pudo editar el personaje código: "
                     .concat(id.toString().concat(" no existe en la base de datos!")));
@@ -99,7 +95,6 @@ public class UserRestController {
 
             userService.save(actualUser);
 
-
         }catch (DataAccessException e) {
             response.put("mensaje", "Error al conectar con la base de datos");
             response.put("error", Objects.requireNonNull(e.getMessage()).concat(":")
@@ -110,13 +105,11 @@ public class UserRestController {
         response.put("mensaje", "El usuario se ha modificado correctamente");
         response.put("people", actualUser);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
-
     }
 
 
     @DeleteMapping("/user/{id}")
     private ResponseEntity<?> delete(@PathVariable Long id){
-
         Map<String,Object> response = new HashMap<>();
         try {
             userService.deleteById(id);
@@ -129,10 +122,9 @@ public class UserRestController {
         response.put("mensaje", "El usuario se ha borrado correctamente");
         return new ResponseEntity<>(response, HttpStatus.OK);
 
-
-
-
     }
+
+
     private static UserDTO getUserDTO(User user){
         UserDTO userDTO = new UserDTO();
         userDTO.setId(user.getId());
