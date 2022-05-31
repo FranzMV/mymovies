@@ -135,16 +135,16 @@ public class TvSerieController {
                 //FAVORITA
                 case Constants.TYPE_LIST_FAVORITE:
                     if(!tvSerieExistsFavoriteList(selectedSerieAux, userAxu)){
+                        log.info("Se añade a favorita");
+                        userAxu.getFavorite_tvSeries().add(selectedSerieAux);
+                        model.addAttribute(Constants.RESULT_LABEL, "Serie "
+                                .concat(selectedSerieAux.getTitle()).concat(" añadida a la lista de Favoritos"));
                         //SI la marca como favorita y no existe en vista, se añade a vista.
                         if(tvSerieExistsWatchedList(selectedSerieAux, userAxu)){
+                            log.info("Al añadir en favorita y no estar en vista, se añade a vista");
                             userAxu.getWatched_tvSeries().add(selectedSerieAux);
-                            model.addAttribute(Constants.RESULT_LABEL, "Serie "
-                                    .concat(selectedSerieAux.getTitle()).concat(" añadida a la lista de Favoritos"));
-                        }else{
-                            userAxu.getFavorite_tvSeries().add(selectedSerieAux);
-                            model.addAttribute(Constants.RESULT_LABEL, "Serie "
-                                    .concat(selectedSerieAux.getTitle()).concat(" añadida a la lista de Favoritos"));
                         }
+
                     }else  model.addAttribute(Constants.ERROR_LABEL, Constants.ERROR_MSG_SERIE_EXISTS_FAVORITE);
 
                     break;
@@ -153,8 +153,9 @@ public class TvSerieController {
                 case Constants.TYPE_LIST_PENDING:
                     if(!tvSerieExistsPendingList(selectedSerieAux, userAxu)){
                         //Si la quiere añadir a PENDIENTE, no debe existir en VISTA
-                        if(tvSerieExistsWatchedList(selectedSerieAux, userAxu)){
-                            userAxu.getWatched_tvSeries().add(selectedSerieAux);
+                        log.info("Entra en pendiente");
+                        if(!tvSerieExistsWatchedList(selectedSerieAux, userAxu)){
+                            userAxu.getPending_tvSeries().add(selectedSerieAux);
                             model.addAttribute(Constants.RESULT_LABEL, "Serie "
                                     .concat(selectedSerieAux.getTitle()).concat(" añadida a la lista de Pendientes"));
                         }else{
@@ -166,28 +167,25 @@ public class TvSerieController {
 
                 //VISTA
                 case Constants.TYPE_LIST_WATCHED:
-                    if(tvSerieExistsWatchedList(selectedSerieAux, userAxu)){
+                    if(!tvSerieExistsWatchedList(selectedSerieAux, userAxu)){
                         //Si la marca como vista y existe en pendiente, la elimina de pendiente
+                        log.info("Entra en vista y se añade");
+                        userAxu.getWatched_tvSeries().add(selectedSerieAux);
+                        model.addAttribute(Constants.RESULT_LABEL, "Serie "
+                                .concat(selectedSerieAux.getTitle()).concat(" añadida a la lista de Vistas"));
                         if(tvSerieExistsPendingList(selectedSerieAux, userAxu)){
+                            log.info("Si existe en pendiente, se elimina");
                             userAxu.getPending_tvSeries().remove(selectedSerieAux);
-                            model.addAttribute(Constants.RESULT_LABEL, "Serie "
-                                    .concat(selectedSerieAux.getTitle()).concat(" añadida a la lista de Vistas y " +
-                                            "eliminada de Pendientes"));
-                        }else{
-                            userAxu.getWatched_tvSeries().add(selectedSerieAux);
-                            model.addAttribute(Constants.RESULT_LABEL, "Serie "
-                                    .concat(selectedSerieAux.getTitle()).concat(" añadida a la lista de Vistas"));
                         }
-                    }else
-                        model.addAttribute(Constants.ERROR_LABEL,  Constants.ERROR_MSG_SERIE_EXISTS_WATCHED);
+
+                    }else model.addAttribute(Constants.ERROR_LABEL,  Constants.ERROR_MSG_SERIE_EXISTS_WATCHED);
                     break;
 
-                default:
-                    model.addAttribute(Constants.ERROR_LABEL, Constants.NO_LIST_SELECTED_ERROR);
+                default: model.addAttribute(Constants.ERROR_LABEL, Constants.NO_LIST_SELECTED_ERROR);
                     break;
-
             }
         }
+        userService.save(userAxu);
         return tvSerieDetail(selectedSerieAux.getId(), model);
     }
 

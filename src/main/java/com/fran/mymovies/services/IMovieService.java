@@ -21,5 +21,4 @@ public interface IMovieService  {
     @Transactional(readOnly = true)
     Page<Movie> findPage(int pageNumber);
 
-
 }

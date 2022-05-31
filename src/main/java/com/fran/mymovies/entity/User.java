@@ -66,7 +66,7 @@ public class User implements Serializable {
     private Set<TvSerie> favorite_tvSeries = new HashSet<>();
 
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "favorite_tv_series", joinColumns = @JoinColumn(name = "user_id"),
+    @JoinTable(name = "pending_tv_series", joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "tv_serie_id"))
     private Set<TvSerie> pending_tvSeries = new HashSet<>();
 

@@ -15,4 +15,5 @@ public interface IMovieDAO extends PagingAndSortingRepository<Movie, Long> {
 
 //    @Query(value = "SELECT m FROM Movie m JOIN m.genres mg WHERE mg.id = :genreId" )
 //    Page<Movie> findMoviesByGenre(Long id, Pageable pageable);
+
 }

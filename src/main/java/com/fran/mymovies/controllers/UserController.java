@@ -60,7 +60,7 @@ public class UserController {
         return "user/login";
     }
 
-    @RequestMapping("/signin")
+    @PostMapping("/signin")
     public ModelAndView signin(@Valid User user){
         actualUser = new User();
         ModelAndView mv = new ModelAndView("redirect:/movies/all/");
@@ -89,7 +89,7 @@ public class UserController {
         return "user/registration";
     }
 
-    @RequestMapping("/registration")
+    @PostMapping("/registration")
     public ModelAndView registration(@Valid User user){
         log.info("Parametro: "+user.getUserName());
         ModelAndView mv = new ModelAndView();
