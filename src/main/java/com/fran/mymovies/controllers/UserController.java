@@ -28,6 +28,8 @@ import javax.validation.Valid;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author Francisco David Manzanedo
@@ -52,10 +54,22 @@ public class UserController {
 
     private User actualUser;
 
+    /**
+     * Debe contener al menos un dígito [0-9].
+     * Debe contener una letra minúscula [a-z].
+     * Debe contener una letra mayúscula. [A-Z].
+     * Debe contener al menos un tamaño mínimo de 4 caracteres y máximo de 20.
+     */
+    private static final Pattern PASSWORD_PATTERN =
+            Pattern.compile( "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{4,20}$");
+
+    public static final Pattern VALID_EMAIL_ADDRESS_REGEX =
+            Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
+
+
     @GetMapping("/login")
     public String login(Model model){
         actualUser = new User();
-        log.info("Entra login");
         model.addAttribute("user", actualUser);
         return "user/login";
     }
@@ -79,6 +93,8 @@ public class UserController {
             mv.addObject(Constants.ERROR_LABEL, Constants.ERROR_PASS_USERNAME_INVALID);
             return mv;
         }
+
+        mv.addObject("user", actualUser);
         return mv;
 
     }
@@ -91,24 +107,30 @@ public class UserController {
 
     @PostMapping("/registration")
     public ModelAndView registration(@Valid User user){
-        log.info("Parametro: "+user.getUserName());
         ModelAndView mv = new ModelAndView();
         User newUser = new User();
-
-        Set<ListType> listTypes = new HashSet<>();
-        listTypes.add(listTypeService.findByListTypeName(ListTypeName.FAVORITA).get());
-        listTypes.add(listTypeService.findByListTypeName(ListTypeName.PENDIENTE).get());
-        listTypes.add(listTypeService.findByListTypeName(ListTypeName.VISTA).get());
-        newUser.setListTypes(listTypes);
-
-        Role rolUser = roleService.getRoleByName(RoleName.ROLE_USER).get();
-        Set<Role> roles = new HashSet<>();
-        roles.add(rolUser);
-        newUser.setRoles(roles);
-
-        newUser.setPassword(Utils.getMd5(user.getPassword()));
+        newUser.setListTypes(setUserListType());
+        newUser.setRoles(setUserRole());
         newUser.setName(user.getName());
-        newUser.setEmail(user.getEmail());
+
+        //PASSWORD VALIDATION
+        if(passwordIsValid(user.getPassword())){
+            newUser.setPassword(Utils.getMd5(user.getPassword()));
+        }else{
+            mv.setViewName("user/registration");
+            mv.addObject(Constants.ERROR_LABEL,
+                    "La contraseña debe de contener al menos un dígito, una letra " +
+                    "minúscula una letra mayúscula y un tamaño mínimo de 4 caracteres y máximo de 20.");
+            return mv;
+        }
+        //EMAIL VALIDATION
+        if(validateEmail(user.getEmail())){
+            newUser.setEmail(user.getEmail());
+        }else{
+            mv.setViewName("user/registration");
+            mv.addObject(Constants.ERROR_LABEL, "La dirección de email no parece correcta.");
+            return mv;
+        }
 
         Optional<User> optionalUser = userService.getUserByName(user.getUserName());
         if(optionalUser.isPresent()){
@@ -120,18 +142,34 @@ public class UserController {
             userService.save(newUser);
         }
 
-        log.info(user.getName());
-        log.info(user.getUserName());
-        log.info(user.getPassword());
-        log.info(user.getEmail());
-        user.getRoles().forEach(r-> log.info(r.getRoleName().name()));
-        user.getListTypes().forEach(l-> log.info(l.getListTypeName().name()));
-        user.getFavorite_movies().forEach(f-> log.info(f.getTitle()));
-
         mv.setViewName("user/login");
         mv.addObject("user",  newUser);
         mv.addObject(Constants.OK_REGISTER_LABEL, Constants.PLEASE_SIGNIN);
         return mv;
     }
 
+    private Set<Role> setUserRole(){
+        Role rolUser = roleService.getRoleByName(RoleName.ROLE_USER).get();
+        Set<Role> roles = new HashSet<>();
+        roles.add(rolUser);
+        return roles;
+    }
+
+    private Set<ListType> setUserListType(){
+        Set<ListType> listTypes = new HashSet<>();
+        listTypes.add(listTypeService.findByListTypeName(ListTypeName.FAVORITA).get());
+        listTypes.add(listTypeService.findByListTypeName(ListTypeName.PENDIENTE).get());
+        listTypes.add(listTypeService.findByListTypeName(ListTypeName.VISTA).get());
+        return listTypes;
+    }
+
+    private static boolean passwordIsValid(final String password) {
+        Matcher matcher = PASSWORD_PATTERN.matcher(password);
+        return matcher.find();
+    }
+
+    private static boolean validateEmail(String emailStr) {
+        Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(emailStr);
+        return matcher.find();
+    }
 }

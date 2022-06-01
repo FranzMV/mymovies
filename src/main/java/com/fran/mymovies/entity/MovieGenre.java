@@ -24,7 +24,7 @@ public class MovieGenre implements Serializable {
     @Id
     private Long id;
     private String name;
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "movies_genres",
             joinColumns = {@JoinColumn(name = "genre_id")},
             inverseJoinColumns = {@JoinColumn(name = "movie_id")})

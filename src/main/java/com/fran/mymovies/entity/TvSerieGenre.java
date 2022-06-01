@@ -22,7 +22,7 @@ public class TvSerieGenre implements Serializable {
     @Id
     private Long id;
     private String name;
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "tv_series_genres",
             joinColumns = {@JoinColumn(name = "genre_id")},
             inverseJoinColumns = {@JoinColumn(name = "tv_series_id")})

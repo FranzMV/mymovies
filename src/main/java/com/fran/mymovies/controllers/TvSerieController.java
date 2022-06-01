@@ -53,10 +53,11 @@ public class TvSerieController {
     @Autowired
     private UserController userController;
 
-
     private Long id_selectedSerie;
 
     private User actualUser;
+
+    private int currentPageAux;
 
     private final String URL_IMAGE ="https://image.tmdb.org/t/p/w500";
 
@@ -66,7 +67,7 @@ public class TvSerieController {
     @GetMapping("/all")
     public String getAllSeries(Model model) {
         actualUser = userController.getActualUser();
-        model.addAttribute("user", actualUser.getUserName());
+        model.addAttribute("user", actualUser);
         model.addAttribute("tvGenres",tvSeriesGenresService.findAll());
         return getOnePage(model, 1);
     }
@@ -74,6 +75,7 @@ public class TvSerieController {
 
     @GetMapping("/page/{pageNumber}")
     public String getOnePage(Model model, @PathVariable("pageNumber") int currentPage){
+        currentPageAux = currentPage;
         Page<TvSerie> page = tvSerieService.findPage(currentPage);
         model.addAttribute("title", "TV Series");
         model.addAttribute("urlImage", URL_IMAGE);
@@ -84,11 +86,23 @@ public class TvSerieController {
         model.addAttribute("totalItems", page.getTotalElements());
         model.addAttribute("tvseries", page.getContent());
         model.addAttribute("tvGenres",tvSeriesGenresService.findAll());
-        model.addAttribute("user", actualUser.getUserName());
+        model.addAttribute("user", actualUser);
         return "series/tvseries-list";
     }
 
-
+    @GetMapping("/detail/{id}")
+    public ModelAndView tvSerieDetail(@PathVariable("id") Long id, Model model){
+        TvSerie selectedTvSerie = tvSerieService.findById(id);
+        selectedTvSerie.getListType().addAll(listTypeService.findAll());
+        id_selectedSerie = id;
+        ModelAndView mv = new ModelAndView("series/tvserie-detail");
+        mv.addObject("selectedTvSerie", selectedTvSerie);
+        mv.addObject("title", selectedTvSerie.getTitle());
+        mv.addObject("urlImage", URL_ORIGINAL_IMAGE);
+        mv.addObject("pageNumber", currentPageAux);
+        mv.addObject("user", actualUser);
+        return mv;
+    }
 
     @GetMapping("filter/{id}")
     public String filterByGenre(Model model, @PathVariable("id") Long id){
@@ -107,23 +121,11 @@ public class TvSerieController {
         model.addAttribute("urlImage", URL_IMAGE);
         model.addAttribute("totalPages", filterGenrePage.getTotalPages());
         model.addAttribute("totalItems", filterGenrePage.getTotalElements());
-        model.addAttribute("user", actualUser.getUserName());
+        model.addAttribute("user", actualUser);
         model.addAttribute("tvseries",filterGenrePage.getContent());
         return "series/tvseries-list";
     }
 
-    @GetMapping("/detail/{id}")
-    public ModelAndView tvSerieDetail(@PathVariable("id") Long id, Model model){
-        TvSerie selectedTvSerie = tvSerieService.findById(id);
-        selectedTvSerie.getListType().addAll(listTypeService.findAll());
-        id_selectedSerie = id;
-        ModelAndView mv = new ModelAndView("series/tvserie-detail");
-        mv.addObject("selectedTvSerie", selectedTvSerie);
-        mv.addObject("title", selectedTvSerie.getTitle());
-        mv.addObject("urlImage", URL_ORIGINAL_IMAGE);
-        mv.addObject("user", actualUser);
-        return mv;
-    }
 
     @PostMapping("/addSerie")
     public ModelAndView addMovieToList(@Valid Movie selectedMovie, Model model){
@@ -140,7 +142,7 @@ public class TvSerieController {
                         model.addAttribute(Constants.RESULT_LABEL, "Serie "
                                 .concat(selectedSerieAux.getTitle()).concat(" añadida a la lista de Favoritos"));
                         //SI la marca como favorita y no existe en vista, se añade a vista.
-                        if(tvSerieExistsWatchedList(selectedSerieAux, userAxu)){
+                        if(!tvSerieExistsWatchedList(selectedSerieAux, userAxu)){
                             log.info("Al añadir en favorita y no estar en vista, se añade a vista");
                             userAxu.getWatched_tvSeries().add(selectedSerieAux);
                         }

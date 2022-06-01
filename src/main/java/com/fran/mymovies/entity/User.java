@@ -22,7 +22,6 @@ public class User implements Serializable {
     private Long id;
     private String name;
 
-
     @Column( name = "user_name", unique = true)
     private String userName;
 
@@ -31,7 +30,7 @@ public class User implements Serializable {
 
     private String password;
 
-    @ManyToMany(fetch = FetchType.EAGER)//Para mostrar el usuario y sus roles
+    @ManyToMany(fetch = FetchType.LAZY)//Para mostrar el usuario y sus roles
     @JoinTable(name = "user_type_list", joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "list_type_id"))
     private Set<ListType> listTypes = new HashSet<>();
@@ -43,34 +42,34 @@ public class User implements Serializable {
     inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = {
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {
             CascadeType.PERSIST
     })
     @JoinTable(name = "favorite_movies", joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "movie_id"))
     private Set<Movie> favorite_movies = new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "pending_movies", joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "movie_id"))
     private Set<Movie> pending_movies = new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "watched_movies", joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "movie_id"))
     private Set<Movie> watched_movies = new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "favorite_tv_series", joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "tv_serie_id"))
     private Set<TvSerie> favorite_tvSeries = new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "pending_tv_series", joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "tv_serie_id"))
     private Set<TvSerie> pending_tvSeries = new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "watched_tv_series", joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "tv_serie_id"))
     private Set<TvSerie> watched_tvSeries = new HashSet<>();

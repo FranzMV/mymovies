@@ -11,7 +11,7 @@
 <div class="row d-flex justify-content-center align-items-center">
     <div class="card shadow-lg p-3 mb-5 mt-5 bg-body rounded" style="border-radius: 15px; width: 65rem; height:50rem">
         <div class="clearfix">
-            <a class="nav-link" th:href="@{/tvseries/all}">
+            <a class="nav-link" th:href="@{/tvseries/page/{pageNumber}(pageNumber=*{pageNumber})}">
                 <button class="btn btn-outline-secondary mt-1 md-2 float-end" data-bs-toggle="tooltip"
                         data-bs-placement="top" title="Volver" style="float:right;">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"

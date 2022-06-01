@@ -30,7 +30,7 @@
                                  class="bi bi-person-circle" viewBox="0 0 16 16">
                                 <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
                                 <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
-                            </svg> [[${user}]] </a>
+                            </svg> <span th:text="${user.UserName}"></span></a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" th:href="@{/movies/all}">
@@ -82,7 +82,9 @@
                                    style="height:30px;">
                             <button class="btn btn-outline-success btn-sm text-white mt-2"
                                     style="background-color:#A3BE8C;"
-                                    type="submit"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                    type="submit"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                       fill="currentColor" class="bi bi-search mb-1"
+                                                       viewBox="0 0 16 16">
                                 <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
                             </svg>
                             </button>
@@ -93,14 +95,14 @@
 <!--                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">-->
 <!--                    <button class="btn btn-outline-success" type="submit">Search</button>-->
 <!--                </form>-->
-
-                <form class="d-flex" >
+                    <a th:href="@{/user/login}">
                     <button class="btn btn-outline-danger btn-sm text-white" style="background-color:#BF616A;">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-right" viewBox="0 0 16 16">
                             <path fill-rule="evenodd" d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0v2z"/>
                             <path fill-rule="evenodd" d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z"/>
                         </svg> Cerrar Sesión</button>
-                </form>
+                    </a>
+
             </div>
         </div>
     </nav>
@@ -136,6 +138,41 @@
                                                 </span>
                                             </li>
                                         </ul>
+                                    </div>
+                                    <div class="d-flex justify-content-end mt-3">
+
+                                        <div th:each="m : ${user.watched_tvSeries }" th:if="${m.id} == *{id}">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                 fill="currentColor" class="bi bi-eye-fill text-primary"
+                                                 data-bs-toggle="tooltip"
+                                                 data-bs-placement="bottom" title="Vista"
+                                                 viewBox="0 0 16 16">
+                                                <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"/>
+                                                <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z"/>
+                                            </svg>
+                                        </div>
+
+                                        <div th:each="m : ${user.favorite_tvSeries}" th:if="${m.id} == *{id}">
+                                            &nbsp;&nbsp;
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                 fill="currentColor" class="bi bi-heart-fill text-danger"
+                                                 data-bs-toggle="tooltip"
+                                                 data-bs-placement="bottom" title="Favorita"
+                                                 viewBox="0 0 16 16">
+                                                <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
+                                            </svg>
+                                        </div>
+
+                                        <div th:each="m : ${user.pending_tvSeries}" th:if="${m.id} == *{id}">
+                                            &nbsp;&nbsp;
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                 fill="currentColor" class="bi bi-calendar2-check-fill text-success" viewBox="0 0 16 16"
+                                                 data-bs-toggle="tooltip"
+                                                 data-bs-placement="bottom" title="Pendiente">
+                                                <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zm9.954 3H2.545c-.3 0-.545.224-.545.5v1c0 .276.244.5.545.5h10.91c.3 0 .545-.224.545-.5v-1c0-.276-.244-.5-.546-.5zm-2.6 5.854a.5.5 0 0 0-.708-.708L7.5 10.793 6.354 9.646a.5.5 0 1 0-.708.708l1.5 1.5a.5.5 0 0 0 .708 0l3-3z"/>
+                                            </svg>
+
+                                        </div>
                                     </div>
                                 </div>
                             </div>

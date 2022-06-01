@@ -13,7 +13,6 @@ import java.util.Set;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
 @Entity
 @Table(name = "tv_series")
 public class TvSerie implements Serializable {
@@ -31,7 +30,7 @@ public class TvSerie implements Serializable {
     private String title;
     private Double vote_average;
     private Long vote_count;
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "tv_series_genres",
             joinColumns = {@JoinColumn(name = "tv_series_id")},
             inverseJoinColumns = {@JoinColumn(name = "genre_id")})

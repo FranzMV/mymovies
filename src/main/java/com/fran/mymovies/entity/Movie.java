@@ -34,7 +34,7 @@ public class Movie implements Serializable {
     private Boolean video;
     private Double vote_average;
     private Long vote_count;
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "movies_genres",
         joinColumns = {@JoinColumn(name = "movie_id")},
             inverseJoinColumns = {@JoinColumn(name = "genre_id")})
