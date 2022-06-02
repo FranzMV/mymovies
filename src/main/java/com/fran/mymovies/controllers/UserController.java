@@ -148,6 +148,12 @@ public class UserController {
         return mv;
     }
 
+    @GetMapping("profile")
+    public ModelAndView getUserProfile(){
+        ModelAndView mv = new ModelAndView("user/profile");
+        mv.addObject("user", actualUser);
+        return mv;
+    }
     private Set<Role> setUserRole(){
         Role rolUser = roleService.getRoleByName(RoleName.ROLE_USER).get();
         Set<Role> roles = new HashSet<>();

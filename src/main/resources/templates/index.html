@@ -69,7 +69,7 @@
 </div>
 
 <main class="bg-light" role="main" >
-<div id="contenido" style="max-height:830px; height:900px;">
+<div id="contenido" style="max-height:830px; height:890px;">
     <div class="row d-flex justify-content-center align-items-center h-100">
         <div class="container my-1" style="width:700px">
             <div class="bg-light p-5 rounded justify-content-center align-items-center" style="border-radius: 15px;">
@@ -97,7 +97,13 @@
 
 </main>
 
-<footer th:insert="fragments :: footer" ></footer>
+<footer class="bg-dark text-center text-lg-start text-white footer" >
+    <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+        © 2022 Copyright:
+        <a class="text-light" href="https://mymovies&tvseries.com/">MyMovies.com</a>
+    </div>
+</footer>
+
 <div th:insert="fragments :: scripts"></div>
 </body>
 </html>

@@ -76,8 +76,7 @@
                                 <li class="list-group-item enabled">
                                     <span class="text-secondary mt-5">Añadir a la lista: </span>
                                     <select class="form-select mt-1" aria-label=".form-select-sm" th:field="*{listType}">
-                                        <option th:each="l: ${selectedMovie.listType}" th:value="${l.id}" th:text="${l.getListTypeName().name()}">
-                                        </option>
+                                        <option th:each="l: ${selectedMovie.listType}" th:value="${l.id}" th:text="${l.getListTypeName().name()}"></option>
                                     </select>
                                 </li>
                             </ul>

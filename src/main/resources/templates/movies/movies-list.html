@@ -26,7 +26,7 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent" th:object="${movies}">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="#">
+                        <a class="nav-link" aria-current="page" th:href="@{/movies/user}">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
                                  class="bi bi-person-circle" viewBox="0 0 16 16">
                                 <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
@@ -108,8 +108,8 @@
 </div>
 
 <main class="bg-light" role="main">
-    <div class="album py-5">
-        <div class="container" >
+    <div class="album py-5" style="background-color:  #F4F7FD;">
+        <div class="container">
             <div class="row">
                 <div class="col-md-4" th:each="movie: ${movies}" th:object="${movie}">
                     <div id="card">
