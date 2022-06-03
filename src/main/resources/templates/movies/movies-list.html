@@ -81,8 +81,8 @@
                             </svg> Mis Listas
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" th:href="@{/movies/user-lists}">Películas</a></li>
-                            <li><a class="dropdown-item" href="#">Series</a></li>
+                            <li><a class="dropdown-item" th:href="@{/movies/user-movies}">Películas</a></li>
+                            <li><a class="dropdown-item" th:href="@{/movies/user-series}">Series</a></li>
                             <li><hr class="dropdown-divider"></li>
                         </ul>
                     </li>
@@ -117,7 +117,7 @@
 </div>
 
 <main class="bg-light" role="main">
-    <div class="album py-5" style="background-color:  #F4F7FD;">
+    <div class="album py-5" style="background-color: #F4F7FD;">
         <div class="container">
             <div class="row">
                 <div class="col-md-4" th:each="movie: ${movies}" th:object="${movie}">

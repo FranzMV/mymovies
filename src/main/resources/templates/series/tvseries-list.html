@@ -119,8 +119,8 @@
         </div>
     </nav>
 </div>
-<main role="main">
-    <div class="album py-5" style="background-color:  #F4F7FD;">
+<main  class="bg-light" role="main" >
+    <div class="album py-5" style="background-color: #F4F7FD;">
         <div class="container" >
             <div class="row">
                 <div class="col-md-4" th:each="tvserie: ${tvseries}"
@@ -152,7 +152,6 @@
                                         </ul>
                                     </div>
                                     <div class="d-flex justify-content-end mt-3">
-
                                         <div th:each="m : ${user.watched_tvSeries }" th:if="${m.id} == *{id}">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                                  fill="currentColor" class="bi bi-eye-fill text-primary"

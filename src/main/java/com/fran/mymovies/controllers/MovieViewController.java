@@ -161,6 +161,7 @@ public class MovieViewController {
     public ModelAndView getUserProfile(){
         final User userAux = userService.getById(actualUser.getId()).get();
         ModelAndView mv =  new ModelAndView("user/profile");
+        mv.addObject("title", "Mi perfil");
         mv.addObject("user", userAux);
         mv.addObject("movies", movieService.findAll());
         mv.addObject("moviesGenres", movieGenresService.findAll());
@@ -174,10 +175,35 @@ public class MovieViewController {
     }
 
 
-    @GetMapping("/user-lists")
-    public String getMoviesList(){
-        return "user/lits-movies";
+    @GetMapping("/user-movies")
+    public ModelAndView getMoviesList(){
+        ModelAndView mv = new ModelAndView("/user/user-movies");
+        mv.addObject("title", "Mi lista de pelis");
+        mv.addObject("user", actualUser);
+        mv.addObject("movies", movieService.findAll());
+        mv.addObject("moviesGenres", movieGenresService.findAll());
+        mv.addObject("favoritesMovies",  actualUser.getFavorite_movies());
+        mv.addObject("watchedMovies", actualUser.getWatched_movies());
+        mv.addObject("pendingMovies", actualUser.getPending_movies());
+        mv.addObject("urlImage", URL_IMAGE);
+        return mv;
     }
+
+    @GetMapping("/user-series")
+    public ModelAndView getSeriesList(){
+        ModelAndView mv = new ModelAndView("/user/user-series");
+        mv.addObject("title", "Mi lista de series");
+        mv.addObject("user", actualUser);
+        mv.addObject("movies", movieService.findAll());
+        mv.addObject("moviesGenres", movieGenresService.findAll());
+        mv.addObject("favoriteSeries", actualUser.getFavorite_tvSeries());
+        mv.addObject("watchedSeries",actualUser.getWatched_tvSeries());
+        mv.addObject("pendingSeries", actualUser.getPending_tvSeries());
+        mv.addObject("urlImage", URL_IMAGE);
+        return mv;
+    }
+
+
 
     /**
      * Añade una película a la lista de Favoritas del usuario actual.
