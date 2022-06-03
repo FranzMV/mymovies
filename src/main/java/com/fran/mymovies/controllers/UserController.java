@@ -21,6 +21,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -148,12 +149,77 @@ public class UserController {
         return mv;
     }
 
-    @GetMapping("profile")
+    @GetMapping("/profile")
     public ModelAndView getUserProfile(){
         ModelAndView mv = new ModelAndView("user/profile");
         mv.addObject("user", actualUser);
+        mv.addObject("totalFavoritesMovies", (long) actualUser.getFavorite_movies().size());
+        mv.addObject("totalWatchedMovies", (long) actualUser.getWatched_movies().size());
+        mv.addObject("totalPendingMovies", (long) actualUser.getPending_movies().size());
+        mv.addObject("totalFavoritesSeries", (long) actualUser.getFavorite_tvSeries().size());
+        mv.addObject("totalWatchedSeries", (long) actualUser.getWatched_tvSeries().size());
+        mv.addObject("totalPendingSeries", (long) actualUser.getPending_tvSeries().size());
         return mv;
     }
+
+    @GetMapping("/edit/{id}")
+    public String editUser(@PathVariable("id") Long id, Model model){
+        User updatedUser = userService.getById(id).get();
+        model.addAttribute("user", updatedUser);
+        return "user/update-user";
+    }
+
+
+    @RequestMapping("/update")
+    public ModelAndView updateUser(@Valid User user, BindingResult result, Model model){
+        ModelAndView mv = new ModelAndView("user/update-user");
+        User updatedUser = userService.getById(user.getId()).get();
+        if(!result.hasErrors()){
+            log.info("Editado: "+updatedUser.getUserName());
+
+            if(passwordIsValid(user.getPassword())){
+                updatedUser.setPassword(Utils.getMd5(user.getPassword()));
+            }else{
+                mv.setViewName("user/update-user");
+                mv.addObject(Constants.ERROR_LABEL,
+                        "La contraseña debe de contener al menos un dígito, una letra " +
+                                "minúscula una letra mayúscula y un tamaño mínimo de 4 caracteres y máximo de 20.");
+                return mv;
+            }
+
+            if(validateEmail(user.getEmail())){
+                updatedUser.setEmail(user.getEmail());
+            }else{
+                mv.setViewName("user/update-user");
+                mv.addObject(Constants.ERROR_LABEL, "La dirección de email no parece correcta.");
+                return mv;
+            }
+
+            updatedUser.setUserName(user.getUserName());
+            updatedUser.setName(user.getName());
+            mv.setViewName("user/profile");
+            mv.addObject("okRegister", "Los datos de su perfil se han actualizado");
+            mv.addObject("user", updatedUser);
+            mv.addObject("totalFavoritesMovies", (long) actualUser.getFavorite_movies().size());
+            mv.addObject("totalWatchedMovies", (long) actualUser.getWatched_movies().size());
+            mv.addObject("totalPendingMovies", (long) actualUser.getPending_movies().size());
+            mv.addObject("totalFavoritesSeries", (long) actualUser.getFavorite_tvSeries().size());
+            mv.addObject("totalWatchedSeries", (long) actualUser.getWatched_tvSeries().size());
+            mv.addObject("totalPendingSeries", (long) actualUser.getPending_tvSeries().size());
+            userService.save(updatedUser);
+        }
+        return mv;
+    }
+
+
+    @GetMapping("/delete/{id}")
+    public String deleteUser(@PathVariable("id") Long id, Model model){
+        userService.deleteById(id);
+        model.addAttribute("okRegister", "Su cuenta ha sido eliminada.");
+        model.addAttribute("user", actualUser);
+        return "user/login";
+    }
+
     private Set<Role> setUserRole(){
         Role rolUser = roleService.getRoleByName(RoleName.ROLE_USER).get();
         Set<Role> roles = new HashSet<>();

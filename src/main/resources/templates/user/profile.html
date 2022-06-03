@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
   <title>My Movies</title>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -105,64 +105,127 @@
     </div>
   </nav>
 </div>
+<div class="card mt-3">
+  <div class="card-body justify-content-center align-items-center" th:object="${user}">
+      <div class="container px-4 py-5 justify-content-center" id="featured-3" style="height:700px;">
+        <h2 class="pb-2 border-bottom">Mi Perfil</h2>
+          <div class="row g-4 py-5 row-cols-1 row-cols-lg-3">
+            <div class="feature col">
+              <div class="mb-3">
+                <label for="formGroupExampleInput" class="form-label">Nombre</label>
+                <input type="text" th:field="*{name}"
+                       class="form-control"
+                       id="formGroupExampleInput"
+                       placeholder="*{name}"
+                       disabled readonly>
+              </div>
+              <div class="mb-3">
+                <label for="formGroupExampleInput2" class="form-label">Nombre de usuario</label>
+                <input type="text"
+                       th:field="*{userName}"
+                       class="form-control"
+                       id="formGroupExampleInput2"
+                       placeholder="*{userName}" disabled readonly>
+              </div>
+              <div class="mb-3">
+                <label for="formGroupExampleInput2" class="form-label">Email</label>
+                <input type="text"
+                       th:field="*{email}"
+                       class="form-control"
+                       id="formGroupExampleInput3"
+                       placeholder="*{email}"
+                       disabled readonly>
+              </div>
+            </div>
 
-<div id="contenido">
-  <div class="container h-100">
-    <div class="row d-flex justify-content-center align-items-center h-100">
-      <div class="col-12 col-md-9 col-lg-7 col-xl-6" style="width:410px; height:900px;">
-        <div class="card position-absolute top-50 start-50 translate-middle"
-             style="border-radius: 15px; width:400px;">
-          <div th:if="${error}" class="alert alert-danger alert-dismissible fade show " role="alert">
-            <p th:text="'!UPSS!' + ${error}"></p>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            <div class="feature col">
+              <h5>Películas</h5>
+              <ul class="list-group list-group-flush">
+                  <li class="list-group-item d-flex justify-content-between align-items-start" th:field="${totalFavoritesMovies}">
+                <span class="text-secondary">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                       fill="currentColor" class="bi bi-eye-fill text-success" viewBox="0 0 16 16">
+                      <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"/>
+                      <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z"/>
+                      </svg> Películas Favoritas: </span>
+                    <span class="badge bg-secondary rounded-pill" th:text="${totalFavoritesMovies}"></span>
+                  </li>
+
+                  <li class="list-group-item d-flex justify-content-between align-items-start" th:field="${totalWatchedMovies}">
+                    <span class="text-secondary">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                        fill="currentColor" class="bi bi-heart-fill text-danger" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
+                      </svg> Películas Vistas: </span>
+                    <span class="badge bg-secondary rounded-pill" th:text="${totalWatchedMovies}"></span>
+                  </li>
+
+                  <li class="list-group-item d-flex justify-content-between align-items-start" th:field="${totalPendingMovies}">
+                  <span class="text-secondary">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                         fill="currentColor" class="bi bi-calendar2-check-fill text-primary" viewBox="0 0 16 16">
+                      <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zm9.954 3H2.545c-.3 0-.545.224-.545.5v1c0 .276.244.5.545.5h10.91c.3 0 .545-.224.545-.5v-1c0-.276-.244-.5-.546-.5zm-2.6 5.854a.5.5 0 0 0-.708-.708L7.5 10.793 6.354 9.646a.5.5 0 1 0-.708.708l1.5 1.5a.5.5 0 0 0 .708 0l3-3z"/>
+                        </svg> Películas Pendientes: </span>
+                      <span class="badge bg-secondary rounded-pill" th:text="${totalPendingMovies}"></span>
+                    </li>
+              </ul>
+            </div>
+
+
+            <div class="feature col">
+              <h5>Series</h5>
+              <ul class="list-group list-group-flush">
+                  <li class="list-group-item d-flex justify-content-between align-items-start" th:field="${totalFavoritesSeries}">
+                    <span class="text-secondary">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                           fill="currentColor" class="bi bi-eye-fill text-success" viewBox="0 0 16 16">
+                          <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"/>
+                          <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z"/>
+                          </svg> Series Favoritas: </span>
+                    <span class="badge bg-secondary rounded-pill" th:text="${totalFavoritesSeries}"></span>
+                  </li>
+
+                  <li class="list-group-item d-flex justify-content-between align-items-start" th:field="${totalWatchedSeries}">
+                    <span class="text-secondary">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                           fill="currentColor" class="bi bi-heart-fill text-danger" viewBox="0 0 16 16">
+                          <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
+                          </svg> Series Vistas: </span>
+                    <span class="badge bg-secondary rounded-pill" th:text="${totalWatchedSeries}"></span>
+                  </li>
+
+                  <li class="list-group-item d-flex justify-content-between align-items-start" th:field="${totalPendingSeries}">
+                    <span class="text-secondary">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                           fill="currentColor" class="bi bi-calendar2-check-fill text-primary" viewBox="0 0 16 16">
+                        <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zm9.954 3H2.545c-.3 0-.545.224-.545.5v1c0 .276.244.5.545.5h10.91c.3 0 .545-.224.545-.5v-1c0-.276-.244-.5-.546-.5zm-2.6 5.854a.5.5 0 0 0-.708-.708L7.5 10.793 6.354 9.646a.5.5 0 1 0-.708.708l1.5 1.5a.5.5 0 0 0 .708 0l3-3z"/>
+                          </svg> Series Pendientes: </span>
+                    <span class="badge bg-secondary rounded-pill" th:text="${totalPendingSeries}"></span>
+                  </li>
+              </ul>
+            </div>
           </div>
-          <div class="card-body p-5 " th:object="${user}">
-            <p class="text-center text-secondary fs-1 mt-">
-              <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor"
-                   class="bi bi-person-circle" viewBox="0 0 16 16">
-              <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
-              <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
-            </svg></p>
-            <p class="text-center text-secondary mb-5">Mi Perfil</p>
-            <form th:action="@{/user/registration}"  method="post" >
-              <div class="form-outline mb-4">
-                <input type="text" th:field="*{name}" class="form-control form-control-lg text-center" placeholder="Nombre" required/>
-              </div>
+      </div>
 
-              <div class="form-outline mb-4">
-                <input type="text"  th:field="*{userName}"
-                       class="form-control form-control-lg text-center"
-                       placeholder="Usuario" required/>
-              </div>
-
-              <div class="form-outline mb-4">
-                <input type="text"  th:field="*{email}"
-                       class="form-control form-control-lg text-center"
-                       placeholder="Email" required/>
-              </div>
-
-              <div class="form-outline mb-4">
-                <input type="password"  th:field="*{password}"
-                       class="form-control form-control-lg text-center"
-                       placeholder="Password"
-                       required data-bs-toggle="tooltip"
-                       data-bs-placement="bottom"
-                       title="La contraseña debe de contener al menos un dígito, una letra minúscula, una letra mayúscula y un tamaño mínimo de 4 caracteres y máximo de 20."/>
-              </div>
-<!--              <div class="d-flex justify-content-center mt-5" >-->
-<!--                <button type="submit" class="btn btn-lg text-white" style="background-color:#88C0D0;"-->
-<!--                        data-bs-toggle="tooltip"-->
-<!--                        data-bs-placement="bottom" title="Registrarse">-->
-<!--                  Registrarse <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">-->
-<!--                  <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/></svg>-->
-
-<!--                </button>-->
-<!--              </div>-->
-            </form>
-          </div>
+      <div class="container mb-5">
+        <div class="d-flex justify-content-end">
+          <a th:href="@{/user/edit/{id} (id=*{id})}">
+            <button class="btn btn-outline-light btn-sm text-white float-right ms-5" style="background-color:#B48EAD;" >
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+                <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
+              </svg> Editar Perfil
+            </button>
+          </a>
+          <a th:href="@{/user/delete/{id} (id=*{id})}">
+            <button class="btn btn-outline-light btn-sm text-white md-2" style="background-color:#BF616A;" >
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16">
+                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+              </svg> Eliminar Cuenta
+            </button>
+          </a>
         </div>
       </div>
-    </div>
   </div>
 </div>
 <footer class="bg-dark text-center text-lg-start text-white footer" >

@@ -74,6 +74,7 @@ public class MovieViewController {
         return getOnePage(model, 1);
     }
 
+
     @GetMapping("/page/{pageNumber}")
     public String getOnePage(Model model, @PathVariable("pageNumber") int currentPage){
         currentPageAux = currentPage;
@@ -159,11 +160,23 @@ public class MovieViewController {
     @GetMapping("/user")
     public ModelAndView getUserProfile(){
         final User userAux = userService.getById(actualUser.getId()).get();
-        ModelAndView modelAndView =  new ModelAndView("redirect:/user/profile");
-//        modelAndView.addObject("user" , userAux);
-        modelAndView.addObject("movies", movieService.findAll());
-        modelAndView.addObject("moviesGenres", movieGenresService.findAll());
-        return modelAndView;
+        ModelAndView mv =  new ModelAndView("user/profile");
+        mv.addObject("user", userAux);
+        mv.addObject("movies", movieService.findAll());
+        mv.addObject("moviesGenres", movieGenresService.findAll());
+        mv.addObject("totalFavoritesMovies", (long) userAux.getFavorite_movies().size());
+        mv.addObject("totalWatchedMovies", (long) userAux.getWatched_movies().size());
+        mv.addObject("totalPendingMovies", (long) userAux.getPending_movies().size());
+        mv.addObject("totalFavoritesSeries", (long) userAux.getFavorite_tvSeries().size());
+        mv.addObject("totalWatchedSeries", (long) userAux.getWatched_tvSeries().size());
+        mv.addObject("totalPendingSeries", (long) userAux.getPending_tvSeries().size());
+        return mv;
+    }
+
+
+    @GetMapping("/user-lists")
+    public String getMoviesList(){
+        return "user/lits-movies";
     }
 
     /**
@@ -287,4 +300,5 @@ public class MovieViewController {
         }
         return !result;
     }
+
 }
