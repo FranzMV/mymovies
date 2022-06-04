@@ -4,10 +4,10 @@
   <title>My Movies</title>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-<!--  <link rel="stylesheet" type="text/css" th:href="@{/css/user.css}">-->
+  <link rel="stylesheet" type="text/css" th:href="@{/css/user.css}">
 </head>
 <body>
-<div>
+<div >
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
       <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
@@ -90,9 +90,9 @@
     </div>
   </nav>
 </div>
-
-<div class="container">
-  <div class="card mt-5 mb-5"  style="background-color: #F4F7FD;">
+<div id="contenido" style="background-color: #F4F7FD;">
+<div class="container h-100 " style="background-color: #F4F7FD;">
+  <div class="card mb-4 mt-4">
     <div class="card-body justify-content-center align-items-center" th:object="${user}">
         <div class="container justify-content-center" id="featured-3" style="height:700px;">
           <h2 class="pb-2 border-bottom">Mi Perfil</h2>
@@ -223,6 +223,7 @@
         </div>
     </div>
   </div>
+</div>
 </div>
 <footer class="bg-dark text-center text-lg-start text-white footer">
   <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">

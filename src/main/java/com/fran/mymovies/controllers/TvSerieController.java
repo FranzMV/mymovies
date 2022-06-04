@@ -76,6 +76,8 @@ public class TvSerieController {
     @GetMapping("/page/{pageNumber}")
     public String getOnePage(Model model, @PathVariable("pageNumber") int currentPage){
         currentPageAux = currentPage;
+        actualUser = userController.getActualUser();
+        User userAux = userService.getById(actualUser.getId()).get();
         Page<TvSerie> page = tvSerieService.findPage(currentPage);
         model.addAttribute("title", "TV Series");
         model.addAttribute("urlImage", URL_IMAGE);
@@ -86,7 +88,7 @@ public class TvSerieController {
         model.addAttribute("totalItems", page.getTotalElements());
         model.addAttribute("tvseries", page.getContent());
         model.addAttribute("tvGenres",tvSeriesGenresService.findAll());
-        model.addAttribute("user", actualUser);
+        model.addAttribute("user", userAux);
         return "series/tvseries-list";
     }
 
