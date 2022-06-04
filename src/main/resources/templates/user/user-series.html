@@ -115,6 +115,10 @@
     </nav>
 </div>
 
+<div  th:if="${result}" class="alert alert-success alert-dismissible fade show text-center" role="alert">
+    <p th:text="${result}"></p>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
 <ul class="nav nav-pills justify-content-center" id="pills-tab" role="tablist">
     <li class="nav-item mt-2" role="presentation">
         <button class="nav-link active text-white" id="pills-home-tab" data-bs-toggle="pill"
@@ -144,11 +148,15 @@
 <!--    FAVORITAS-->
     <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
         <main  class="bg-light" role="main" >
+            <div th:if="${totalFavoriteSeries == 0 }" class="alert alert-danger alert-dismissible fade show text-center"
+                 role="alert">
+                <p>La lista de series favoritas está vacía.</p>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
             <div class="album py-5" >
                 <div class="container" >
                     <div class="row">
-                        <div class="col-md-4" th:each="tvserie: ${favoriteSeries}"
-                             th:object="${tvserie}">
+                        <div class="col-md-4" th:each="tvserie: ${favoriteSeries}" th:object="${tvserie}">
                             <div>
                                 <div class="card mb-4 shadow p-3 mb-5 bg-body rounded" style="width: 25rem; height:30rem">
                                     <img class="card-img-top"
@@ -176,7 +184,8 @@
                                         </div>
                                         <div class="d-flex justify-content-end mt-3">
                                             &nbsp;&nbsp;
-                                            <a  th:href="@{/tvseries/detail/{id}(id=*{id})}" style="text-decoration: none;color: inherit;">
+                                            <a  th:href="@{/user/delete-favorite-serie/{id}(id=*{id})}"
+                                                style="text-decoration: none;color: inherit;">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                                      class="bi bi-x-circle-fill text-danger" viewBox="0 0 16 16"
                                                      data-bs-toggle="tooltip"
@@ -198,6 +207,11 @@
 <!-- VISTAS   -->
     <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
         <main  class="bg-light" role="main" >
+            <div th:if="${totalWatchedSeries == 0 }" class="alert alert-danger alert-dismissible fade show text-center"
+                 role="alert">
+                <p>La lista de series vistas está vacía.</p>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
             <div class="album py-5">
                 <div class="container" >
                     <div class="row">
@@ -230,7 +244,8 @@
                                         </div>
                                         <div class="d-flex justify-content-end mt-3">
                                             &nbsp;&nbsp;
-                                            <a  th:href="@{/tvseries/detail/{id}(id=*{id})}" style="text-decoration: none;color: inherit;">
+                                            <a  th:href="@{/user/delete-watched-serie/{id}(id=*{id})}"
+                                            style="text-decoration: none;color: inherit;">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                                  class="bi bi-x-circle-fill text-danger" viewBox="0 0 16 16"
                                                  data-bs-toggle="tooltip"
@@ -252,6 +267,11 @@
 <!--PENDIENTES-->
     <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
         <main  class="bg-light" role="main" >
+            <div th:if="${totalPendingSeries == 0 }" class="alert alert-danger alert-dismissible fade show text-center"
+                 role="alert">
+                <p>La lista de series pendientes está vacía.</p>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
             <div class="album py-5">
                 <div class="container" >
                     <div class="row">
@@ -284,7 +304,8 @@
                                         </div>
                                         <div class="d-flex justify-content-end mt-3">
                                             &nbsp;&nbsp;
-                                            <a  th:href="@{/tvseries/detail/{id}(id=*{id})}" style="text-decoration: none;color: inherit;">
+                                            <a  th:href="@{/user/delete-pending-serie/{id}(id=*{id})}"
+                                                style="text-decoration: none;color: inherit;">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                                      class="bi bi-x-circle-fill text-danger" viewBox="0 0 16 16"
                                                      data-bs-toggle="tooltip"

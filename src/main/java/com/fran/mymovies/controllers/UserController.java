@@ -1,23 +1,15 @@
 package com.fran.mymovies.controllers;
 
-import com.fran.mymovies.entity.ListType;
-import com.fran.mymovies.entity.Role;
-import com.fran.mymovies.entity.User;
+import com.fran.mymovies.entity.*;
 import com.fran.mymovies.entity.enums.ListTypeName;
 import com.fran.mymovies.entity.enums.RoleName;
-import com.fran.mymovies.services.IListTypeService;
-import com.fran.mymovies.services.MovieServiceImpl;
+import com.fran.mymovies.services.*;
 import com.fran.mymovies.utils.Constants;
 import com.fran.mymovies.utils.Utils;
-import jdk.jshell.execution.Util;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import com.fran.mymovies.services.RoleServiceImpl;
-import com.fran.mymovies.services.UserServiceImpl;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,6 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.regex.Matcher;
@@ -53,7 +46,23 @@ public class UserController {
     @Autowired
     private IListTypeService listTypeService;
 
+    @Autowired
+    private MovieServiceImpl movieService;
+
+    @Autowired
+    private MovieGenreImpl movieGenresService;
+
+    @Autowired
+    private TvSerieServiceImpl tvSerieService;
+
+    @Autowired
+    private TvSeriesGenresImpl tvSeriesGenresService;
+
     private User actualUser;
+
+
+    private final String URL_IMAGE ="https://image.tmdb.org/t/p/w500";
+    private final String URL_ORIGINAL_IMAGE ="https://image.tmdb.org/t/p/w500";
 
     /**
      * Debe contener al menos un dígito [0-9].
@@ -220,6 +229,137 @@ public class UserController {
         return "user/login";
     }
 
+    @GetMapping("/delete-favorite-movie/{id}")
+    public String deleteFavoriteMovie(@PathVariable("id") Long id, Model model){
+        Movie movieAux = movieService.findById(id);
+        User userAux = userService.getById(actualUser.getId()).get();
+        userAux.getFavorite_movies().remove(movieAux);
+        userAux.getWatched_movies().remove(movieAux);
+
+        userService.save(userAux);
+
+        model.addAttribute("result", "Película "+movieAux.getTitle()+" eliminada de favoritos.");
+        model.addAttribute("title", "Mi lista de pelis");
+        model.addAttribute("user", actualUser);
+        model.addAttribute("movies", movieService.findAll());
+        model.addAttribute("moviesGenres", movieGenresService.findAll());
+        model.addAttribute("favoritesMovies",  userAux.getFavorite_movies());
+        model.addAttribute("watchedMovies", userAux.getWatched_movies());
+        model.addAttribute("pendingMovies", userAux.getPending_movies());
+        model.addAttribute("urlImage", URL_IMAGE);
+        return  "/user/user-movies";
+    }
+
+    @GetMapping("/delete-watched-movie/{id}")
+    public String deleteWatchedMovie(@PathVariable("id") Long id, Model model){
+        Movie movieAux = movieService.findById(id);
+        User userAux = userService.getById(actualUser.getId()).get();
+        userAux.getWatched_movies().remove(movieAux);
+        if(watchedMovieIsInFavoriteList(movieAux, userAux)){
+            userAux.getFavorite_movies().remove(movieAux);
+        }
+
+        userService.save(userAux);
+
+        model.addAttribute("result", "Película "+movieAux.getTitle()+" eliminada de vistas.");
+        model.addAttribute("title", "Mi lista de pelis");
+        model.addAttribute("user", actualUser);
+        model.addAttribute("movies", movieService.findAll());
+        model.addAttribute("moviesGenres", movieGenresService.findAll());
+        model.addAttribute("favoritesMovies",  userAux.getFavorite_movies());
+        model.addAttribute("watchedMovies", userAux.getWatched_movies());
+        model.addAttribute("pendingMovies", userAux.getPending_movies());
+        model.addAttribute("urlImage", URL_IMAGE);
+        return  "/user/user-movies";
+    }
+
+    @GetMapping("/delete-pending-movie/{id}")
+    public String deletePendingMovie(@PathVariable("id") Long id, Model model){
+        Movie movieAux = movieService.findById(id);
+        User userAux = userService.getById(actualUser.getId()).get();
+        userAux.getPending_movies().remove(movieAux);
+
+        userService.save(userAux);
+
+        model.addAttribute("result", "Película "+movieAux.getTitle()+" eliminada de pendientes.");
+        model.addAttribute("title", "Mi lista de pelis");
+        model.addAttribute("user", actualUser);
+        model.addAttribute("movies", movieService.findAll());
+        model.addAttribute("moviesGenres", movieGenresService.findAll());
+        model.addAttribute("favoritesMovies",  userAux.getFavorite_movies());
+        model.addAttribute("watchedMovies", userAux.getWatched_movies());
+        model.addAttribute("pendingMovies", userAux.getPending_movies());
+        model.addAttribute("urlImage", URL_IMAGE);
+        return  "/user/user-movies";
+    }
+
+
+    @GetMapping("/delete-favorite-serie/{id}")
+    public String deleteFavoriteSerie(@PathVariable("id") Long id, Model model){
+        TvSerie tvSerieAux = tvSerieService.findById(id);
+        User userAux = userService.getById(actualUser.getId()).get();
+        userAux.getFavorite_tvSeries().remove(tvSerieAux);
+        userAux.getWatched_tvSeries().remove(tvSerieAux);
+
+        userService.save(userAux);
+
+        model.addAttribute("result", "Serie "+tvSerieAux.getTitle()+" eliminada de favoritos.");
+        model.addAttribute("title", "Mi lista de series");
+        model.addAttribute("user", userAux);
+        model.addAttribute("tvseries", tvSerieService.findAll());
+        model.addAttribute("tvGenres", tvSeriesGenresService.findAll());
+        model.addAttribute("favoriteSeries", userAux.getFavorite_tvSeries());
+        model.addAttribute("watchedSeries",userAux.getWatched_tvSeries());
+        model.addAttribute("pendingSeries", userAux.getPending_tvSeries());
+        model.addAttribute("urlImage", URL_IMAGE);
+        return  "/user/user-series";
+    }
+
+
+    @GetMapping("/delete-watched-serie/{id}")
+    public String deleteWatchedSerie(@PathVariable("id") Long id, Model model){
+        TvSerie tvSerieAux = tvSerieService.findById(id);
+        User userAux = userService.getById(actualUser.getId()).get();
+        userAux.getWatched_tvSeries().remove(tvSerieAux);
+        if(watchedSerieIsInFavoriteList(tvSerieAux, userAux)){
+            userAux.getFavorite_tvSeries().remove(tvSerieAux);
+        }
+
+        userService.save(userAux);
+
+        model.addAttribute("result", "Serie "+tvSerieAux.getTitle()+" eliminada de vistas.");
+        model.addAttribute("title", "Mi lista de series");
+        model.addAttribute("user", userAux);
+        model.addAttribute("tvseries", tvSerieService.findAll());
+        model.addAttribute("tvGenres", tvSeriesGenresService.findAll());
+        model.addAttribute("favoriteSeries", userAux.getFavorite_tvSeries());
+        model.addAttribute("watchedSeries",userAux.getWatched_tvSeries());
+        model.addAttribute("pendingSeries", userAux.getPending_tvSeries());
+        model.addAttribute("urlImage", URL_IMAGE);
+        return  "/user/user-series";
+    }
+
+
+    @GetMapping("/delete-pending-serie/{id}")
+    public String deletePendingSerie(@PathVariable("id") Long id, Model model){
+        TvSerie tvSerieAux = tvSerieService.findById(id);
+        User userAux = userService.getById(actualUser.getId()).get();
+        userAux.getPending_tvSeries().remove(tvSerieAux);
+
+        userService.save(userAux);
+
+        model.addAttribute("result", "Serie "+tvSerieAux.getTitle()+" eliminada de pendientes.");
+        model.addAttribute("title", "Mi lista de pelis");
+        model.addAttribute("user", userAux);
+        model.addAttribute("tvseries", tvSerieService.findAll());
+        model.addAttribute("tvGenres", tvSeriesGenresService.findAll());
+        model.addAttribute("favoriteSeries", userAux.getFavorite_tvSeries());
+        model.addAttribute("watchedSeries",userAux.getWatched_tvSeries());
+        model.addAttribute("pendingSeries", userAux.getPending_tvSeries());
+        model.addAttribute("urlImage", URL_IMAGE);
+        return  "/user/user-series";
+    }
+
     private Set<Role> setUserRole(){
         Role rolUser = roleService.getRoleByName(RoleName.ROLE_USER).get();
         Set<Role> roles = new HashSet<>();
@@ -243,5 +383,29 @@ public class UserController {
     private static boolean validateEmail(String emailStr) {
         Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(emailStr);
         return matcher.find();
+    }
+
+    private boolean watchedMovieIsInFavoriteList(Movie watchedMovie, User actualUser){
+        boolean result = false;
+        for (Movie m: actualUser.getFavorite_movies()) {
+            if (watchedMovie.getId().equals(m.getId())) {
+                result = true;
+                break;
+            }
+        }
+
+        return result;
+    }
+
+    private boolean watchedSerieIsInFavoriteList(TvSerie watchedSerie, User actualUser){
+        boolean result = false;
+        for (TvSerie s: actualUser.getFavorite_tvSeries()) {
+            if (watchedSerie.getId().equals(s.getId())) {
+                result = true;
+                break;
+            }
+        }
+
+        return result;
     }
 }

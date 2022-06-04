@@ -79,6 +79,7 @@ public class MovieViewController {
     public String getOnePage(Model model, @PathVariable("pageNumber") int currentPage){
         currentPageAux = currentPage;
         actualUser = userController.getActualUser();
+        User userAux = userService.getById(actualUser.getId()).get();
         Page<Movie> page = movieService.findPage(currentPageAux);
         model.addAttribute("title", "Movies");
         model.addAttribute("urlImage", URL_IMAGE);
@@ -88,7 +89,7 @@ public class MovieViewController {
         model.addAttribute("totalPages", page.getTotalPages());
         model.addAttribute("totalItems", page.getTotalElements());
         model.addAttribute("movies", page.getContent());
-        model.addAttribute("user", actualUser);
+        model.addAttribute("user", userAux);
         return "movies/movies-list";
     }
 
@@ -178,13 +179,17 @@ public class MovieViewController {
     @GetMapping("/user-movies")
     public ModelAndView getMoviesList(){
         ModelAndView mv = new ModelAndView("/user/user-movies");
+        User userAux = userService.getById(actualUser.getId()).get();
         mv.addObject("title", "Mi lista de pelis");
-        mv.addObject("user", actualUser);
+        mv.addObject("user", userAux);
         mv.addObject("movies", movieService.findAll());
         mv.addObject("moviesGenres", movieGenresService.findAll());
-        mv.addObject("favoritesMovies",  actualUser.getFavorite_movies());
-        mv.addObject("watchedMovies", actualUser.getWatched_movies());
-        mv.addObject("pendingMovies", actualUser.getPending_movies());
+        mv.addObject("favoritesMovies",  userAux.getFavorite_movies());
+        mv.addObject("watchedMovies", userAux.getWatched_movies());
+        mv.addObject("pendingMovies", userAux.getPending_movies());
+        mv.addObject("totalFavoriteMovies", (long) userAux.getFavorite_movies().size());
+        mv.addObject("totalWatchedMovies", (long) userAux.getWatched_movies().size());
+        mv.addObject("totalPendingMovies", (long) userAux.getPending_movies().size());
         mv.addObject("urlImage", URL_IMAGE);
         return mv;
     }
@@ -192,13 +197,17 @@ public class MovieViewController {
     @GetMapping("/user-series")
     public ModelAndView getSeriesList(){
         ModelAndView mv = new ModelAndView("/user/user-series");
+        User userAux = userService.getById(actualUser.getId()).get();
         mv.addObject("title", "Mi lista de series");
-        mv.addObject("user", actualUser);
+        mv.addObject("user", userAux);
         mv.addObject("movies", movieService.findAll());
-        mv.addObject("moviesGenres", movieGenresService.findAll());
-        mv.addObject("favoriteSeries", actualUser.getFavorite_tvSeries());
-        mv.addObject("watchedSeries",actualUser.getWatched_tvSeries());
-        mv.addObject("pendingSeries", actualUser.getPending_tvSeries());
+        mv.addObject("seriesGenres", movieGenresService.findAll());
+        mv.addObject("favoriteSeries", userAux.getFavorite_tvSeries());
+        mv.addObject("watchedSeries",userAux.getWatched_tvSeries());
+        mv.addObject("pendingSeries", userAux.getPending_tvSeries());
+        mv.addObject("totalFavoritesSeries", (long) userAux.getFavorite_tvSeries().size());
+        mv.addObject("totalWatchedSeries", (long) userAux.getWatched_tvSeries().size());
+        mv.addObject("totalPendingSeries", (long) userAux.getPending_tvSeries().size());
         mv.addObject("urlImage", URL_IMAGE);
         return mv;
     }
