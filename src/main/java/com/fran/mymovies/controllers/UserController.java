@@ -154,7 +154,7 @@ public class UserController {
 
         mv.setViewName("user/login");
         mv.addObject("user",  newUser);
-        mv.addObject(Constants.OK_REGISTER_LABEL, Constants.PLEASE_SIGNIN);
+        mv.addObject(Constants.OK_REGISTER_LABEL, "Bienvenido "+newUser.getUserName()+"! Por favor, inicia sesión.");
         return mv;
     }
 
@@ -209,12 +209,12 @@ public class UserController {
             mv.setViewName("user/profile");
             mv.addObject("okRegister", "Los datos de su perfil se han actualizado");
             mv.addObject("user", updatedUser);
-            mv.addObject("totalFavoritesMovies", (long) actualUser.getFavorite_movies().size());
-            mv.addObject("totalWatchedMovies", (long) actualUser.getWatched_movies().size());
-            mv.addObject("totalPendingMovies", (long) actualUser.getPending_movies().size());
-            mv.addObject("totalFavoritesSeries", (long) actualUser.getFavorite_tvSeries().size());
-            mv.addObject("totalWatchedSeries", (long) actualUser.getWatched_tvSeries().size());
-            mv.addObject("totalPendingSeries", (long) actualUser.getPending_tvSeries().size());
+            mv.addObject("totalFavoritesMovies", (long) updatedUser.getFavorite_movies().size());
+            mv.addObject("totalWatchedMovies", (long) updatedUser.getWatched_movies().size());
+            mv.addObject("totalPendingMovies", (long) updatedUser.getPending_movies().size());
+            mv.addObject("totalFavoritesSeries", (long) updatedUser.getFavorite_tvSeries().size());
+            mv.addObject("totalWatchedSeries", (long) updatedUser.getWatched_tvSeries().size());
+            mv.addObject("totalPendingSeries", (long) updatedUser.getPending_tvSeries().size());
             userService.save(updatedUser);
         }
         return mv;

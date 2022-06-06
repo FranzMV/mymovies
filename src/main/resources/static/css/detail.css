@@ -1,2 +1,23 @@
 
 body {background-color: #F4F7FD; }
+
+
+.gradient-custom-5{
+     /* ff 3.6+ */
+        background:-moz-linear-gradient(90deg, rgba(255, 235, 59, 1) 0%, rgba(233, 30, 99, 1) 100%);
+
+        /* safari 5.1+,chrome 10+ */
+        background:-webkit-linear-gradient(90deg, rgba(255, 235, 59, 1) 0%, rgba(233, 30, 99, 1) 100%);
+
+        /* opera 11.10+ */
+        background:-o-linear-gradient(90deg, rgba(255, 235, 59, 1) 0%, rgba(233, 30, 99, 1) 100%);
+
+        /* ie 6-9 */
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e91e63', endColorstr='#FFEB3B', GradientType=0 );
+
+        /* ie 10+ */
+        background:-ms-linear-gradient(90deg, rgba(255, 235, 59, 1) 0%, rgba(233, 30, 99, 1) 100%);
+
+        /* global 94%+ browsers support */
+        background:linear-gradient(90deg, rgba(255, 235, 59, 1) 0%, rgba(233, 30, 99, 1) 100%);
+}

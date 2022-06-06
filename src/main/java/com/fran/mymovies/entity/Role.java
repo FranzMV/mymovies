@@ -10,6 +10,15 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
+/**
+ * <p>Representa el rol asignado a cada tipo de {@link User} y sus atributos.</p>
+ * @see User
+ * @see RoleName
+ * @see java.io.Serializable
+ *
+ * @author Francisco David Manzanedo.
+ * @version 1.1
+ */
 @Getter
 @Setter
 @NoArgsConstructor
@@ -17,16 +26,20 @@ import java.io.Serializable;
 @Entity
 public class Role implements Serializable {
 
+    /**
+     * El Id correspondiente al rol.
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    /**
+     * El nombre {@link RoleName} del rol.
+     * @see RoleName
+     */
     @NotNull
     @Enumerated(EnumType.STRING)
     @Column(unique = true)
     private RoleName roleName;
-
-    public Role(RoleName roleName) {
-        this.roleName = roleName;
-    }
 
 }
