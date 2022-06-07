@@ -1,0 +1,10 @@
+com.fran.mymovies
+com.fran.mymovies.api.rest
+com.fran.mymovies.controllers
+com.fran.mymovies.dao
+com.fran.mymovies.dto
+com.fran.mymovies.entity
+com.fran.mymovies.entity.enums
+com.fran.mymovies.services
+com.fran.mymovies.utils
+com.fran.mymovies.utils.create
