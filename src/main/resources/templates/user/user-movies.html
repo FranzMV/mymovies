@@ -137,7 +137,7 @@
                 <p>La lista de películas favoritas está vacía.</p>
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
-            <div class="album py-5">
+            <div class="album py-5 mt-3" style="background-color:#D08770;">
                 <div class="container">
                     <div class="row">
                         <div class="col-md-4" th:each="movie: ${favoritesMovies}"  th:object="${movie}">
@@ -196,7 +196,7 @@
                     <p>La lista de películas vistas está vacía.</p>
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
-                <div class="album py-5">
+                <div class="album py-5 mt-3" style="background-color:#EBCB8B;">
                     <div class="container">
                         <div class="row">
                             <div class="col-md-4" th:each="movie: ${watchedMovies}" th:object="${movie}">
@@ -249,13 +249,13 @@
 <!--PENDIENTES    -->
     <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
         <div class="tab-pane fade show active" id="pills-home3" role="tabpanel" aria-labelledby="pills-home-tab">
-            <main class="bg-light" role="main">
+            <main class="bg-light mt-3" role="main">
                 <div th:if="${totalPendingMovies == 0 }"
                      class="alert alert-danger alert-dismissible fade show text-center" role="alert">
                     <p>La lista de películas pendientes está vacía.</p>
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
-                <div class="album py-5">
+                <div class="album py-5 mt-3" style="background-color:#5E81AC;">
                     <div class="container">
                         <div class="row">
                             <div class="col-md-4" th:each="movie: ${pendingMovies}" th:object="${movie}">
